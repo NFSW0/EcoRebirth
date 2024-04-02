@@ -1,0 +1,44 @@
+class_name _AudioManager
+extends Node
+# 仅会在本地使用 无需设置RPC
+
+enum AudioBus{BGM, SFX}
+
+# 音频资源字典
+var audio_resources := {"audio_name":{"bus":&"SFX","audio_stream":"audio_stream"}}
+
+# 初始化 应用设置 设置数据全局访问
+func _init():
+	# 清理数据
+	_cancel_all_audio()
+	# 设置频道音量
+	AudioServer.set_bus_volume_db(1,1)
+	# 设置频道静音
+	AudioServer.set_bus_mute(1,true)
+
+# 注册音频资源
+func register_audio(audio_name: String, audio_bus: AudioBus, audio_stream: AudioStream):
+	if audio_name not in audio_resources:
+		var bus = &"BGM" if audio_bus == AudioBus.BGM else &"SFX"
+		audio_resources[audio_name] = {"bus": bus, "audio_stream": audio_stream}
+	else:
+		print("(重复注册音频-已忽略)Warning: Audio resource '" + audio_name + "' already exists.")
+
+# 播放音频
+func play_audio(audio_name: String):
+	if audio_name in audio_resources:
+		var audio_data: Dictionary = audio_resources.get(audio_name)
+		var audio_stream: AudioStream = audio_data["audio_stream"]
+		var audio_bus: StringName = audio_data["bus"]
+		var audio_player = AudioStreamPlayer.new()
+		audio_player.set_stream(audio_stream)
+		audio_player.set_bus(audio_bus)
+		audio_player.set_autoplay(true)
+		add_child(audio_player)
+		audio_player.connect("finished",func():audio_player.queue_free()) # 自动释放
+	else:
+		print("(音频缺失)Error: Audio resource '" + audio_name + "' not found.")
+
+# 注销所有音频
+func _cancel_all_audio():
+	audio_resources.clear()
