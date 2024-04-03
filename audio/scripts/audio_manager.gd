@@ -22,7 +22,8 @@ func register_audio(audio_name: String, audio_bus: AudioBus, audio_stream: Audio
 		var bus = &"BGM" if audio_bus == AudioBus.BGM else &"SFX"
 		audio_resources[audio_name] = {"bus": bus, "audio_stream": audio_stream}
 	else:
-		print("(重复注册音频-已忽略)Warning: Audio resource '" + audio_name + "' already exists.")
+		var message = "(重复注册音频-已忽略)Warning: Audio resource '%s' already exists." % audio_name # 生成错误信息
+		LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 输出日志
 
 # 播放音频
 func play_audio(audio_name: String):
@@ -37,7 +38,8 @@ func play_audio(audio_name: String):
 		add_child(audio_player)
 		audio_player.connect("finished",func():audio_player.queue_free()) # 自动释放
 	else:
-		print("(音频缺失)Error: Audio resource '" + audio_name + "' not found.")
+		var message = "(音频缺失)Error: Audio resource '%s' not found." % audio_name # 生成错误信息
+		LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 输出日志
 
 # 注销所有音频
 func _cancel_all_audio():

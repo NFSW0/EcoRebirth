@@ -1,6 +1,7 @@
-class_name _DebugManager
-extends Node
-# 日志管理器 用于集中处理日志信息
+class_name LogAccess
+extends RefCounted
+# 日志处理器 自定义日志处理
+
 
 enum LogLevel {DEBUG, INFO, WARNING, ERROR, CRITICAL} # 日志级别(不重要(低) -> 重要(高))
 
@@ -8,6 +9,7 @@ const LOG_FILE_PATH : String = "user://log.txt" # 日志文件路径
 
 var log_to_file : bool = false # 是否写入日志文件
 var current_level : LogLevel = LogLevel.DEBUG # 设定的日志级别，如果即将输出的日志级别低于设定级别，则不会输出
+
 
 func log_message(level: LogLevel, type_name: String, message: String):
 	if level < current_level: # 如果日志级别低于设定级别
