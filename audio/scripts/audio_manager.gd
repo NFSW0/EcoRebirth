@@ -1,6 +1,6 @@
 class_name _AudioManager
 extends Node
-# 仅会在本地使用 无需设置RPC
+# 仅会在本地使用 无需设置RPC 依赖数据管理器
 
 enum AudioBus{BGM, SFX}
 
@@ -15,6 +15,10 @@ func _init():
 	AudioServer.set_bus_volume_db(1,1)
 	# 设置频道静音
 	AudioServer.set_bus_mute(1,true)
+
+# 判断名称可用
+func name_available(unique_name: String) -> bool:
+	return not audio_resources.has(unique_name) # 如果名称不唯一则返回false
 
 # 注册音频资源
 func register_audio(audio_name: String, audio_bus: AudioBus, audio_stream: AudioStream):
