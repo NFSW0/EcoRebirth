@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Eco Rebirth"
+run/main_scene="res://launcher/scenes/launcher.tscn"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
