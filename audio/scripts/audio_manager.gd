@@ -1,11 +1,10 @@
 class_name _AudioManager
 extends Node
-# 仅会在本地使用 无需设置RPC 依赖数据管理器
+# 音频管理器 仅会在本地使用 无需多人RPC 依赖数据管理器
 
-enum AudioBus{BGM, SFX}
+enum AudioBus{BGM, SFX} # 音频线道
 
-# 音频资源字典
-var audio_resources := {"audio_name":{"bus":&"SFX","audio_stream":"audio_stream"}}
+var audio_resources := {} # 存储注册的音频资源
 
 # 初始化 应用设置 设置数据全局访问
 func _init():
