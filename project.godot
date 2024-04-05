@@ -23,6 +23,7 @@ buses/default_bus_layout="res://audio/assets/AudioBus/default_bus_layout.tres"
 
 DataManager="*res://data/scripts/data_manager.gd"
 AudioManager="*res://audio/scripts/audio_manager.gd"
+UIManager="*res://ui/scripts/ui_manager.gd"
 
 [display]
 
