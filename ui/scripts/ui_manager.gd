@@ -4,7 +4,7 @@ extends CanvasLayer
 
 var ui_registry = {} # 存储所有注册的UI
 
-func register_ui(ui_name: String, callback: Callable, scene: PackedScene) -> String: # 注册UI 会自动改进名称 返回最终注册的名称
+func register_ui(ui_name: String, scene: PackedScene, callback: Callable = func(_requester):) -> String: # 注册UI 会自动改进名称 返回最终注册的名称
 	var final_name = ui_name # 存储最终注册的名称
 	var count = 1 # 用于循环改进名称
 	while final_name in ui_registry: # 如果名称重复
