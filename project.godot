@@ -35,6 +35,11 @@ window/size/window_height_override=540
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[gui]
+
+theme/default_theme_scale=0.5
+theme/custom="res://ui/assets/EcoRebirth.tres"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
