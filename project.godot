@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Eco Rebirth"
-run/main_scene="res://launcher/scenes/launcher.tscn"
+run/main_scene="res://scenes/launcher/scenes/launcher.tscn"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [audio]
 
-buses/default_bus_layout="res://audio/assets/AudioBus/default_bus_layout.tres"
+buses/default_bus_layout="res://audio/assets/eco_rebirth.tres"
 
 [autoload]
 
