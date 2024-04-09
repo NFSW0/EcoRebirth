@@ -1,18 +1,15 @@
 {
-  "ui_scenes": [
-	{
-	  "path": "res://mod/ecorebirth/ui/my_ui.tscn",
-	  "callback_script": "res://mod/ecorebirth/scripts/my_ui_script.gd"
-	}
-  ],
-  "materials": [
-	"res://mod/ecorebirth/materials/my_material.tres"
-  ],
-  "audios": [
-	"res://mod/ecorebirth/audios/my_audio.ogg",
-	"res://mod/ecorebirth/audios/my_audio.ogg"
-  ],
-  "settings": {
-	"path": "res://mod/ecorebirth/settings/settings.json"
-  }
+"audio": [
+{"name":"Focus", "path":"res://mod/ecorebirth/audio/Focus.ogg", "bus":"SFX"},
+{"name":"Warning", "path":"res://mod/ecorebirth/audio/Warning.ogg", "bus":"SFX"},
+{"name":"Negative", "path":"res://mod/ecorebirth/audio/Negative.ogg", "bus":"SFX"},
+{"name":"Positive", "path":"res://mod/ecorebirth/audio/Positive.ogg", "bus":"SFX"},
+{"name":"Interaction", "path":"res://mod/ecorebirth/audio/Interaction.ogg", "bus":"SFX"}
+],
+"ui": [
+{"name":"", "path": "res://mod/ecorebirth/ui/", "callback_script": "res://mod/ecorebirth/scripts/my_ui_script.gd", "callback_method":""}
+],
+"texture": [
+{"name":"GithubLogo", "path":"res://mod/ecorebirth/texture/"}
+]
 }
