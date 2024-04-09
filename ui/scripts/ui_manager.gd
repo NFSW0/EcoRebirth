@@ -11,6 +11,8 @@ func register_ui(ui_name: String, scene: PackedScene, callback: Callable = func(
 		final_name = "%s_%d" % [ui_name, count] # 改进名称
 		count += 1 # 循环变量
 	ui_registry[final_name] = {"scene": scene, "callback": callback} # 注册UI
+	var message = "已注册界面: %s %s" % [final_name, ui_registry[final_name]] # 生成日志信息
+	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 记录日志
 	return final_name # 返回最终注册的名称
 
 func get_ui(ui_name: String, requester: Node) -> Node: # 获取UI

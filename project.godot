@@ -25,6 +25,7 @@ buses/default_bus_layout="res://audio/assets/eco_rebirth.tres"
 DataManager="*res://data/scripts/data_manager.gd"
 AudioManager="*res://audio/scripts/audio_manager.gd"
 UIManager="*res://ui/scripts/ui_manager.gd"
+TextureManager="*res://texture/scripts/texture_manager.gd"
 
 [display]
 
