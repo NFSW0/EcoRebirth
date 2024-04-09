@@ -1,0 +1,18 @@
+{
+  "ui_scenes": [
+	{
+	  "path": "res://mod/ecorebirth/ui/my_ui.tscn",
+	  "callback_script": "res://mod/ecorebirth/scripts/my_ui_script.gd"
+	}
+  ],
+  "materials": [
+	"res://mod/ecorebirth/materials/my_material.tres"
+  ],
+  "audios": [
+	"res://mod/ecorebirth/audios/my_audio.ogg",
+	"res://mod/ecorebirth/audios/my_audio.ogg"
+  ],
+  "settings": {
+	"path": "res://mod/ecorebirth/settings/settings.json"
+  }
+}
