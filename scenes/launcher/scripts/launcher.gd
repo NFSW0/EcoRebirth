@@ -3,19 +3,19 @@ extends Control
 
 # 音频和UI资源路径
 var audio_resources = [
-	{"name": "Focus", "bus":AudioManager.AudioBus.SFX, "path": "res://scenes/launcher/audio/Focus.ogg"},
-	{"name": "Interaction", "bus":AudioManager.AudioBus.SFX, "path": "res://scenes/launcher/audio/Interaction.ogg"},
-	{"name": "Negative", "bus":AudioManager.AudioBus.SFX, "path": "res://scenes/launcher/audio/Negative.ogg"},
-	{"name": "Positive", "bus":AudioManager.AudioBus.SFX, "path": "res://scenes/launcher/audio/Positive.ogg"},
-	{"name": "Warning", "bus":AudioManager.AudioBus.SFX, "path": "res://scenes/launcher/audio/Warning.ogg"},
+	{"name": "Focus", "bus":AudioManager.AudioBus.SFX, "path": "res://mod/ecorebirth/audio/Focus.ogg"},
+	{"name": "Interaction", "bus":AudioManager.AudioBus.SFX, "path": "res://mod/ecorebirth/audio/Interaction.ogg"},
+	{"name": "Negative", "bus":AudioManager.AudioBus.SFX, "path": "res://mod/ecorebirth/audio/Negative.ogg"},
+	{"name": "Positive", "bus":AudioManager.AudioBus.SFX, "path": "res://mod/ecorebirth/audio/Positive.ogg"},
+	{"name": "Warning", "bus":AudioManager.AudioBus.SFX, "path": "res://mod/ecorebirth/audio/Warning.ogg"},
 ]
 var ui_resources = [
-	{"name": "MainMenu", "path": "res://scenes/launcher/ui/main_menu.tscn", "callable":func(_requester):},
-	{"name": "VersionNumber", "path": "res://scenes/launcher/ui/version_number.tscn", "callable":func(_requester):},
-	{"name": "Hyperlinks", "path": "res://scenes/launcher/ui/hyperlinks.tscn", "callable":func(_requester):},
+	{"name": "MainMenu", "path": "res://mod/ecorebirth/ui/main_menu.tscn", "callable":func(_requester):},
+	{"name": "VersionNumber", "path": "res://mod/ecorebirth/ui/version_number.tscn", "callable":func(_requester):},
+	{"name": "Hyperlinks", "path": "res://mod/ecorebirth/ui/hyperlinks.tscn", "callable":func(_requester):},
 ]
 var texture_resource = [
-	{"name": "GithubLogo", "path": "res://scenes/launcher/texture/GitHub_logo.png"},
+	{"name": "GithubLogo", "path": "res://mod/ecorebirth/texture/GitHub_logo.png"},
 ]
 
 var message_id =1 # 下一条消息编号 用于产生唯一名称

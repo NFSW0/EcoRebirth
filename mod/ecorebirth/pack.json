@@ -4,12 +4,14 @@
 {"name":"Warning", "path":"res://mod/ecorebirth/audio/Warning.ogg", "bus":"SFX"},
 {"name":"Negative", "path":"res://mod/ecorebirth/audio/Negative.ogg", "bus":"SFX"},
 {"name":"Positive", "path":"res://mod/ecorebirth/audio/Positive.ogg", "bus":"SFX"},
-{"name":"Interaction", "path":"res://mod/ecorebirth/audio/Interaction.ogg", "bus":"SFX"}
+{"name":"Interaction", "path":"res://mod/ecorebirth/audio/Interaction.ogg", "bus":"SFX"},
 ],
 "ui": [
-{"name":"", "path": "res://mod/ecorebirth/ui/", "callback_script": "res://mod/ecorebirth/scripts/my_ui_script.gd", "callback_method":""}
+{"name":"Hyperlinks", "path": "res://mod/ecorebirth/ui/hyperlinks.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":""},
+{"name":"MainMenu", "path": "res://mod/ecorebirth/ui/main_menu.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":""},
+{"name":"VersionNumber", "path": "res://mod/ecorebirth/ui/version_number.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":""},
 ],
 "texture": [
-{"name":"GithubLogo", "path":"res://mod/ecorebirth/texture/"}
+{"name":"GithubLogo", "path":"res://mod/ecorebirth/texture/GitHub_logo.png"},
 ]
 }

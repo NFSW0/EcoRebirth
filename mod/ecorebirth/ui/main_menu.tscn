@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ryep0owrcbfi"]
 
-[ext_resource type="Script" path="res://scenes/launcher/ui/main_menu.gd" id="1_h5yn5"]
+[ext_resource type="Script" path="res://mod/ecorebirth/scripts/main_menu.gd" id="1_h5yn5"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -63,7 +63,11 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
+[connection signal="mouse_entered" from="VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/SinglePlay" to="." method="_on_single_play_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/SinglePlay" to="." method="_on_single_play_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/MultiPlay" to="." method="_on_multi_play_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/MultiPlay" to="." method="_on_multi_play_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/Setting" to="." method="_on_setting_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/Setting" to="." method="_on_setting_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/Exit" to="." method="_on_exit_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

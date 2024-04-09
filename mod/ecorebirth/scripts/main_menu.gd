@@ -9,16 +9,31 @@ extends Control
 
 
 func _on_single_play_pressed():
+	AudioManager.play_audio("Interaction")
 	pass # 存档界面
 
 
 func _on_multi_play_pressed():
+	AudioManager.play_audio("Interaction")
 	pass # 多人界面
 
 
 func _on_setting_pressed():
+	AudioManager.play_audio("Interaction")
 	pass # 设置界面
 
 
 func _on_exit_pressed():
+	AudioManager.play_audio("Interaction")
 	get_tree().quit()
+
+#region 按钮触碰音效
+func _on_single_play_mouse_entered():
+	AudioManager.play_audio("Focus")
+func _on_multi_play_mouse_entered():
+	AudioManager.play_audio("Focus")
+func _on_setting_mouse_entered():
+	AudioManager.play_audio("Focus")
+func _on_exit_mouse_entered():
+	AudioManager.play_audio("Focus")
+#endregion

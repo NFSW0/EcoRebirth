@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://blx8mc5rb8v84"]
 
-[ext_resource type="Script" path="res://scenes/launcher/ui/hyperlinks.gd" id="1_rdo6m"]
+[ext_resource type="Script" path="res://mod/ecorebirth/scripts/hyperlinks.gd" id="1_rdo6m"]
 
 [node name="Hyperlinks" type="Control"]
 layout_mode = 3
