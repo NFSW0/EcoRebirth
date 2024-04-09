@@ -24,6 +24,7 @@ func play_audio(audio_name: String) -> Node: # 播放音频
 		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), message) # 记录错误日志
 		return null # 返回空
 
+#region 私有方法
 func _generate_final_name(audio_name: String) -> String: # 生成唯一名称
 	var final_name = audio_name # 存储最终注册的名称
 	var count = 1 # 用于循环改进名称
@@ -46,3 +47,4 @@ func _initialize_and_play(audio_stream: AudioStream, audio_bus: StringName) -> N
 	add_child(audio_player) # 添加进场景
 	audio_player.connect("finished",func():audio_player.queue_free()) # 设置自动释放
 	return audio_player # 返回播放器节点
+#endregion

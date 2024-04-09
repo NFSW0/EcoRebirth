@@ -7,8 +7,6 @@ extends Control
 @onready var setting = %Setting # 设置
 @onready var exit =%Exit # 退出
 
-#region 1
-#endregion
 
 func _on_single_play_pressed():
 	pass # 存档界面
