@@ -7,9 +7,9 @@
 {"name":"Interaction", "path":"res://mod/ecorebirth/audio/Interaction.ogg", "bus":"SFX"},
 ],
 "ui": [
-{"name":"Hyperlinks", "path": "res://mod/ecorebirth/ui/hyperlinks.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":""},
-{"name":"MainMenu", "path": "res://mod/ecorebirth/ui/main_menu.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":""},
-{"name":"VersionNumber", "path": "res://mod/ecorebirth/ui/version_number.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":""},
+{"name":"Hyperlinks", "path": "res://mod/ecorebirth/ui/hyperlinks.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"test"},
+{"name":"MainMenu", "path": "res://mod/ecorebirth/ui/main_menu.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"test"},
+{"name":"VersionNumber", "path": "res://mod/ecorebirth/ui/version_number.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"test"},
 ],
 "texture": [
 {"name":"GithubLogo", "path":"res://mod/ecorebirth/texture/GitHub_logo.png"},
