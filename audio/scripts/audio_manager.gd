@@ -2,8 +2,14 @@ class_name _AudioManager
 extends Node
 # 音频管理器 仅会在本地使用 无需多人RPC 依赖数据管理器
 
-enum AudioBus {BGM, SFX} # 音频线道
+enum AudioBus {Master, BGM, SFX} # 音频线道
 var audio_resources := {} # 存储注册的音频资源
+
+func get_audio_bus_by_name(bus_name: String) -> AudioBus: # 获取声道枚举
+	match bus_name: # 比较名称
+		AudioBus.BGM: return AudioBus.BGM # 返回背景音乐线道
+		AudioBus.SFX: return AudioBus.SFX # 返回音效线道
+		_: return AudioBus.Master # 默认返回主线道
 
 func register_audio(audio_name: String, audio_bus: AudioBus, audio_stream: AudioStream) -> String: # 注册音频
 	var final_name = _generate_final_name(audio_name) # 生成唯一名称

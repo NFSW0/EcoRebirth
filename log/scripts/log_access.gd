@@ -21,7 +21,10 @@ func log_message(level: LogLevel, type_name: String, message: String): ## 输出
 		var file = FileAccess.open(LOG_FILE_PATH,FileAccess.READ_WRITE) ## 打开日志文件
 		file.store_line(final_message) ## 在末尾添加日志记录
 	else: ## 如果不写入日志文件
-		print(final_message) ## 将信息输出到控制台
+		if level > 2:
+			printerr(final_message) ## 将错误信息输出到控制台
+		else: 
+			print(final_message) ## 将信息输出到控制台
 
 func set_log_level(level: LogLevel): ## 设置日志级别
 	current_level = level ## 设置日志级别
