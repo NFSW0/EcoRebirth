@@ -4,25 +4,26 @@ extends Control
 const mod_pack_file_name = "pack.json" # 模组注册文件的固定名称
 const mods_dir = "res://mod/" # 模组文件识别起始目录
 
-var message_id =1 # 消息编号 用于产生唯一名称
-var message_duration =1 # 消息持续时间
-var message_fade_time =0.5 # 消息淡出时间
+var message_id = 1 # 消息编号 用于产生唯一名称
+var message_duration = 1 # 消息持续时间
+var message_fade_time = 0.5 # 消息淡出时间
 var interval = 0.05 # 处理间隔
 var mod_dir_paths = ["res://mod/ecorebirth/"] # 存储模组目录
-var title_screen_path = "res://scenes/title_screen/scenes/title_screen.tscn" # 标题场景路径
+var main_scene_path = "res://scenes/main/scenes/main.tscn" # 主场景路径
 
 func _ready():
 	if not OS.has_feature("editor"): # 如果是导出项目
+		mod_dir_paths.clear() # 清理目录集合
 		await _link_mods() # 加载MOD
 	await _register_resources() # 注册资源
-	_launcher_game(title_screen_path) # 进入标题屏
+	_launcher_game(main_scene_path) # 进入标题屏
 
 func _add_message(label_text): # 显示加载信息
 	# 添加Label
 	var new_label = Label.new()
 	new_label.text = label_text
 	new_label.name = str(message_id)
-	%LableBox.add_child(new_label)
+	%MessageBox.add_child(new_label)
 	# 淡出Label
 	message_id += 1
 	var tween = new_label.create_tween()
