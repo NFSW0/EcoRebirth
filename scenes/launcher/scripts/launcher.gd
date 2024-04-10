@@ -159,9 +159,9 @@ func _register_texture_resource(_texture_resource): # 注册材质
 			TextureManager.register_texture(texture["name"], _texture)
 			await get_tree().create_timer(interval).timeout
 
-func _launcher_game(main_scene_path: String) -> String: # 进入开始菜单(标题屏幕)
-	if not ResourceLoader.exists(main_scene_path):
-		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), "主场景路径无效: %s" % main_scene_path) # 记录错误日志
+func _launcher_game(_main_scene_path: String) -> String: # 进入开始菜单(标题屏幕)
+	if not ResourceLoader.exists(_main_scene_path):
+		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), "主场景路径无效: %s" % _main_scene_path) # 记录错误日志
 		return "游戏启动失败"
-	get_tree().call_deferred("change_scene_to_file", main_scene_path)
+	get_tree().call_deferred("change_scene_to_file", _main_scene_path)
 	return "游戏启动成功"
