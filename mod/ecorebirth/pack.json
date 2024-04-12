@@ -18,8 +18,8 @@
 {"name":"TitleScreenBackGround", "path":"res://mod/ecorebirth/texture/TitleScreenBackGround.png"},
 ],
 "setting": [
-{"path":"Graphic/FullScreen", "options":[true], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_full_screen"},
+{"path":"Graphic/FullScreen", "options":[true, false], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_full_screen"},
 {"path":"Graphic/Resolution", "options":["1920x1080", "1280x720", "800x600"], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_resolution"},
-{"path":"Audio/MainVolume", "options":[-80,20], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_main_volume"},
+{"path":"Audio/MainVolume", "options":[-80,10], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_master_volume"},
 ],
 }

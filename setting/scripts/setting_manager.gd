@@ -22,7 +22,7 @@ func get_options(path: String) -> Array: # 获取层级数据 首个元素用于
 			result.append(key) # 组合成集合
 	return [false] + result # 返回选项组的集合
 
-func setting_value(path: String, value): # 应用设置
+func apply_setting(path: String, value): # 应用设置
 	var path_array = path.split("/") # 路径划分
 	var current_element = root_group.get_option(path_array) # 通过参数获取元素
 	if current_element is SettingOption: # 如果元素是选项

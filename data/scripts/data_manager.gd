@@ -49,6 +49,9 @@ func get_data(data_name: String, default = null): # 获取数据
 		LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 输出日志
 		return default # 返回默认值
 
+func has_registered(data_name: String) -> bool:
+	return data.has(data_name)
+
 func set_data(data_name: String, value) -> bool: # 更新数据 返回是否成功
 	if not data_name in data: # 如果数据不存在
 		var message = "(缺失数据-已忽略)Data not found:%s" % data_name # 生成提示信息

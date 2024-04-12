@@ -1,6 +1,6 @@
 class_name LogAccess
 extends RefCounted
-## 日志处理器 自定义日志处理
+## 日志处理器 自定义日志处理 TODO 清理日志文件的功能
 
 enum LogLevel {DEBUG, INFO, WARNING, ERROR, CRITICAL} ## 日志级别(不重要(低) -> 重要(高))
 
@@ -21,9 +21,9 @@ func log_message(level: LogLevel, type_name: String, message: String): ## 输出
 		var file = FileAccess.open(LOG_FILE_PATH,FileAccess.READ_WRITE) ## 打开日志文件
 		file.store_line(final_message) ## 在末尾添加日志记录
 	else: ## 如果不写入日志文件
-		if level > 2:
+		if level > 2: ## 如果错误程度较高
 			printerr(final_message) ## 将错误信息输出到控制台
-		else: 
+		else: ## 如果是可忽略的日志
 			print(final_message) ## 将信息输出到控制台
 
 func set_log_level(level: LogLevel): ## 设置日志级别

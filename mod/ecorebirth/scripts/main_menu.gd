@@ -5,6 +5,7 @@ extends Control
 var hyperlinks : Control # 快捷链接面板
 var version_number : Control # 版本号面板
 
+@onready var button_box = %ButtonBox
 @onready var single_play = %SinglePlay # 单人游戏
 @onready var multi_play = %MultiPlay # 多人游戏
 @onready var setting = %Setting # 设置
@@ -13,6 +14,20 @@ var version_number : Control # 版本号面板
 func _ready():
 	hyperlinks = UIManager.get_ui("Hyperlinks", self) # 快捷链接
 	version_number = UIManager.get_ui("VersionNumber", self) # 版本号
+
+func _input(event): # 通过数字实现快速点击对应按钮
+	if event.is_released() and event is InputEventKey: # 键盘松开
+		_handle_numeric_input(event) # 处理数字输入的函数
+	elif event.is_action_pressed("ui_cancel"): # ESC输入
+		_on_exit_pressed() # 触发返回
+
+func _handle_numeric_input(event: InputEventKey): # 处理数字输入
+	var key_str = event.as_text() # 获取字符化的按键
+	if "1" <= key_str and key_str <= "9": # 确认是数字键
+		var index = int(key_str) - 1 # 获取索引
+		if index < button_box.get_child_count(): # 防止溢出
+			var button = button_box.get_child(index) # 获取按钮
+			button.emit_signal("pressed") # 触发点击事件
 
 func _close(): # 关闭此面板 主要用于切换面板时剔除原面板
 	hyperlinks.queue_free()
@@ -34,6 +49,7 @@ func _on_setting_pressed():
 	_close()
 func _on_exit_pressed():
 	AudioManager.play_audio("Interaction")
+	DataManager.save_data() # 保存数据
 	get_tree().quit()
 #endregion
 
