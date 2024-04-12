@@ -19,6 +19,7 @@ func get_ui(ui_name: String, requester: Node) -> Node: # 获取UI
 	if ui_name in ui_registry: # 如果UI已注册
 		var ui_node = _find_child_by_name(ui_name) # 尝试获取已加载的同名UI
 		if ui_node: # 如果有已加载的同名UI
+			ui_node.show() # 防止隐藏导致的一些问题
 			return ui_node # 返回加载的UI实例
 		else: # 如果没有同名UI被加载
 			var ui_instance = (ui_registry[ui_name]["scene"] as PackedScene).instantiate() # 实例化UI场景

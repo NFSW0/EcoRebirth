@@ -26,6 +26,7 @@ DataManager="*res://data/scripts/data_manager.gd"
 AudioManager="*res://audio/scripts/audio_manager.gd"
 UIManager="*res://ui/scripts/ui_manager.gd"
 TextureManager="*res://texture/scripts/texture_manager.gd"
+SettingManager="*res://setting/scripts/setting_manager.gd"
 
 [display]
 

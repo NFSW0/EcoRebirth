@@ -11,9 +11,15 @@
 {"name":"MainMenu", "path": "res://mod/ecorebirth/ui/main_menu.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"test"},
 {"name":"VersionNumber", "path": "res://mod/ecorebirth/ui/version_number.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"test"},
 {"name":"TitleScreen", "path": "res://mod/ecorebirth/ui/title_screen.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"test"},
+{"name":"SettingMenu", "path": "res://mod/ecorebirth/ui/setting_menu.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"test"},
 ],
 "texture": [
 {"name":"GithubLogo", "path":"res://mod/ecorebirth/texture/GitHub_logo.png"},
 {"name":"TitleScreenBackGround", "path":"res://mod/ecorebirth/texture/TitleScreenBackGround.png"},
-]
+],
+"setting": [
+{"path":"Graphic/FullScreen", "options":[true], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_full_screen"},
+{"path":"Graphic/Resolution", "options":["1920x1080", "1280x720", "800x600"], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_resolution"},
+{"path":"Audio/MainVolume", "options":[-80,20], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_main_volume"},
+],
 }

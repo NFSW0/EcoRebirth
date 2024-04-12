@@ -114,6 +114,7 @@ func _register_resources(): # 注册资源
 		await _register_audio_resources(register_data["audio"]) # 注册外部音频资源
 		await _register_ui_resources(register_data["ui"]) # 注册外部UI资源
 		await _register_texture_resource(register_data["texture"]) # 注册外部材质
+		await _register_setting_resource(register_data["setting"]) # 注册外部设置
 
 func _load_register_data(mod_path : String) -> Dictionary: # 获取pack.json存储的注册数据
 	var register_data = {} # 待存储解析的数据
@@ -158,6 +159,13 @@ func _register_texture_resource(_texture_resource): # 注册材质
 			var _texture = load(texture["path"])
 			TextureManager.register_texture(texture["name"], _texture)
 			await get_tree().create_timer(interval).timeout
+
+func _register_setting_resource(_setting_resource): # 注册设置
+	for setting in _setting_resource:
+		_add_message(setting["path"])
+		var callback = Callable(load(setting["callback_script"]),setting["callback_method"])
+		SettingManager.register_option(setting["path"], setting["options"], [callback])
+		await get_tree().create_timer(interval).timeout
 
 func _launcher_game(_main_scene_path: String) -> String: # 进入开始菜单(标题屏幕)
 	if not ResourceLoader.exists(_main_scene_path):
