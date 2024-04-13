@@ -29,7 +29,7 @@ layout_mode = 2
 [node name="Back" type="Button" parent="CenterContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "返回"
+text = "Back"
 
 [connection signal="mouse_entered" from="CenterContainer/VBoxContainer/Back" to="." method="_on_back_mouse_entered"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]

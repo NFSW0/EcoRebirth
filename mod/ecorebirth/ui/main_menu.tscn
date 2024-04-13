@@ -40,22 +40,22 @@ layout_mode = 2
 [node name="SinglePlay" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "开始游戏"
+text = "SinglePlay"
 
 [node name="MultiPlay" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "多人游戏"
+text = "MultiPlay"
 
 [node name="Setting" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "设置"
+text = "Setting"
 
 [node name="Exit" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "退出"
+text = "Exit"
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2

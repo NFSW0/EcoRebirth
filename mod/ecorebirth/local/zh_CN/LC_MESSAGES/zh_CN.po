@@ -1,0 +1,67 @@
+# LANGUAGE translation for Eco Rebirth for the following files:
+# res://mod/ecorebirth/ui/main_menu.tscn
+# res://mod/ecorebirth/ui/setting_menu.tscn
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Eco Rebirth\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: NFSW0 <1262510555@qq.com>\n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: mod/ecorebirth/ui/main_menu.tscn
+msgid "SinglePlay"
+msgstr "开始游戏"
+
+#: mod/ecorebirth/ui/main_menu.tscn
+msgid "MultiPlay"
+msgstr "多人游戏"
+
+#: mod/ecorebirth/ui/main_menu.tscn
+msgid "Setting"
+msgstr "设置"
+
+#: mod/ecorebirth/ui/main_menu.tscn
+msgid "Exit"
+msgstr "退出"
+
+#: mod/ecorebirth/ui/setting_menu.tscn
+msgid "Back"
+msgstr "返回"
+
+#: mod/ecorebirth/ui/setting_menu.tscn
+msgid "Graphic"
+msgstr "图像"
+
+#: mod/ecorebirth/ui/setting_menu.tscn
+msgid "Audio"
+msgstr "音频"
+
+#: mod/ecorebirth/ui/setting_menu.tscn
+msgid "FullScreen"
+msgstr "全屏"
+
+#: mod/ecorebirth/ui/setting_menu.tscn
+msgid "Resolution"
+msgstr "分辨率"
+
+#: mod/ecorebirth/ui/setting_menu.tscn
+msgid "MainVolume"
+msgstr "主音量"
+
+#: mod/ecorebirth/ui/setting_menu.tscn
+msgid "true"
+msgstr "是"
+
+#: mod/ecorebirth/ui/setting_menu.tscn
+msgid "false"
+msgstr "否"
