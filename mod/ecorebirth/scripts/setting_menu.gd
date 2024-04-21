@@ -126,7 +126,7 @@ func _generate_group_button(group_name) -> Button: # 构造组按钮
 	var setting_button = Button.new() # 新建按钮节点
 	setting_button.text = group_name # 设置按钮显示的文本
 	setting_button.connect("pressed", _on_group_button_pressed.bind(group_name)) # 设置按钮点击事件
-	setting_button.connect("mouse_entered", func():AudioManager.play_audio("Focus")) # 设置按钮点击事件
+	setting_button.connect("mouse_entered", func():AudioManager.play_audio("Focus")) # 设置鼠标触碰事件
 	return setting_button
 func _on_group_button_pressed(group_name): # 选项点击事件
 	AudioManager.play_audio("Interaction") # 点击音效
@@ -147,8 +147,9 @@ func _generate_option_button(value) -> Button: # 构造选项控件 布尔和枚
 	if save_value != null and save_value == value: # 如果有存储的值且同名
 		setting_button.disabled = true # 设置为不可用 提示这是当前的设置值
 	setting_button.text = str(value) # 设置按钮显示的文本
-	if not setting_button.disabled: # 由于disable按钮依然可以通过脚本触发 再此取消监听添加
+	if not setting_button.disabled: # 由于disable按钮依然可以通过脚本触发 在此取消监听添加
 		setting_button.connect("pressed", _on_option_button_pressed.bind(value)) # 设置按钮点击事件
+		setting_button.connect("mouse_entered", func():AudioManager.play_audio("Focus")) # 设置鼠标触碰事件
 	return setting_button # 返回选项按钮
 func _on_option_button_pressed(value): # 完成设置
 	AudioManager.play_audio("Interaction") # 点击音效
@@ -163,6 +164,7 @@ func _on_option_button_pressed(value): # 完成设置
 func _on_back_pressed(): # 返回按钮点击事件
 	AudioManager.play_audio("Interaction") # 点击音效
 	UIManager.get_ui("MainMenu", self) # 加载主菜单面板
+	DataManager.save_data() # 保存数据
 	_close()
 func _on_back_mouse_entered(): # 返回按钮触碰事件
 	AudioManager.play_audio("Focus")

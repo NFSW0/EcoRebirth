@@ -1,15 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cyxf046cwrtnm"]
+[gd_scene load_steps=2 format=3 uid="uid://xyqxme7s23cj"]
 
-[ext_resource type="Script" path="res://mod/ecorebirth/scripts/setting_menu.gd" id="1_lnong"]
+[ext_resource type="Script" path="res://mod/ecorebirth/scripts/archive_menu.gd" id="1_qdjpa"]
 
-[node name="SettingMenu" type="Control"]
+[node name="ArchiveMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_lnong")
+script = ExtResource("1_qdjpa")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -25,11 +25,9 @@ layout_mode = 2
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderMini"
-text = "Setting"
-horizontal_alignment = 1
-vertical_alignment = 1
+text = "Archive"
 
-[node name="OptionBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="ArchiveBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 

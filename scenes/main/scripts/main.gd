@@ -2,7 +2,8 @@ extends Node
 
 func _ready():
 	await _load_setting("") # 应用玩家设置
-	UIManager.get_ui("TitleScreen", self) # 标题界面
+	var ui_instancate : Control = UIManager.get_ui("TitleScreen", self) # 标题界面
+	ui_instancate.reparent(self) # 重设父级用于游玩时换场景
 
 func _load_setting(path: String): # 加载设置
 	var array = SettingManager.get_options(path) # 获取全部注册的设置

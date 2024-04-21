@@ -27,6 +27,7 @@ AudioManager="*res://audio/scripts/audio_manager.gd"
 UIManager="*res://ui/scripts/ui_manager.gd"
 TextureManager="*res://texture/scripts/texture_manager.gd"
 SettingManager="*res://setting/scripts/setting_manager.gd"
+GameManager="*res://game/scripts/game_manager.gd"
 
 [display]
 
@@ -36,6 +37,7 @@ window/size/window_width_override=960
 window/size/window_height_override=540
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/size/always_on_top.editor=true
 
 [gui]
 

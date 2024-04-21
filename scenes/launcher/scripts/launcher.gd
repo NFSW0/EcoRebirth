@@ -67,7 +67,7 @@ func _get_mod_file_path_array(mods_directory_path: String) -> Array: # 获取模
 			file_name = mods_directory.get_next()
 		mods_directory.list_dir_end()
 	else: # 如果未能打开文件夹
-		var error_message = "尝试访问模组文件夹时出错，请确认文件夹可访问:%s" % mods_directory_path
+		var error_message = "尝试访问模组文件夹时出错(游戏将纯净模式启动)，请确认文件夹可访问:%s" % mods_directory_path
 		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), error_message) # 记录错误日志
 		var accept_dialog = AcceptDialog.new() # 创建并弹出错误提示对话框
 		accept_dialog.borderless = true
@@ -78,7 +78,7 @@ func _get_mod_file_path_array(mods_directory_path: String) -> Array: # 获取模
 		add_child(accept_dialog)
 		accept_dialog.popup_centered_ratio(0.3)
 		await accept_dialog.confirmed # 等待用户确认后退出应用，因为游戏主体也是mod
-		get_tree().quit()
+		mod_dir_paths= ["res://mod/ecorebirth/"]
 	return mod_file_path_array
 
 func _load_mod_files(mod_file_path_array: Array) -> Array: # 加载模组文件

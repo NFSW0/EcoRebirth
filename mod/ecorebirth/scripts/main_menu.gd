@@ -37,7 +37,7 @@ func _close(): # 关闭此面板 主要用于切换面板时剔除原面板
 #region 按钮点击事件
 func _on_single_play_pressed():
 	AudioManager.play_audio("Interaction")
-	pass # 存档界面
+	UIManager.get_ui("ArchiveMenu", self) # 存档界面
 	_close()
 func _on_multi_play_pressed():
 	AudioManager.play_audio("Interaction")

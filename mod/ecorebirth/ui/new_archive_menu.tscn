@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmddffnv6ywxt"]
+
+[ext_resource type="Script" path="res://mod/ecorebirth/scripts/new_archive_menu.gd" id="1_11ac3"]
+
+[node name="NewArchiveMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_11ac3")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderMini"
+text = "New Archive"
+
+[node name="OptionBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ArchiveName" type="LineEdit" parent="CenterContainer/VBoxContainer/OptionBox"]
+layout_mode = 2
+placeholder_text = "Name"
+alignment = 1
+
+[node name="Seed" type="LineEdit" parent="CenterContainer/VBoxContainer/OptionBox"]
+layout_mode = 2
+placeholder_text = "Seed"
+alignment = 1
+
+[node name="CircleTime" type="Button" parent="CenterContainer/VBoxContainer/OptionBox"]
+layout_mode = 2
+text = "周期:30"
+
+[node name="Difficulty" type="Button" parent="CenterContainer/VBoxContainer/OptionBox"]
+layout_mode = 2
+text = "难度:普通"
+
+[node name="Tip" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Create" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Create"
+
+[node name="Cancel" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cancel"
+
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/Create" to="." method="_on_create_mouse_entered"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Create" to="." method="_on_create_pressed"]
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/Cancel" to="." method="_on_cancel_mouse_entered"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Cancel" to="." method="_on_cancel_pressed"]
