@@ -68,5 +68,5 @@ func _on_back_pressed(): # 返回按钮点击事件
 	UIManager.get_ui("MainMenu", self) # 加载主菜单面板
 	_close()
 func _on_back_mouse_entered(): # 返回按钮触碰事件
-	AudioManager.play_audio("Focus")
+	AudioManager.play_audio("Focus") # 鼠标触碰音效
 #endregion

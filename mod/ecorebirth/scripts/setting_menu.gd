@@ -109,7 +109,8 @@ func _generate_line_edit(min_value, max_value) -> LineEdit: # 生成输入框
 			AudioManager.play_audio("Interaction") # 点击音效
 			_on_back_pressed()# 回到主菜单
 		else:
-			AudioManager.play_audio("Warning")) # 警告音效
+			AudioManager.play_audio("Warning") # 警告音效
+			UIManager.get_ui("MessageBox", self).send_message("Please enter the number (0-9).")) # 发送提示信息
 	return line_edit # 返回添加的控件
 func _on_text_submitted(new_text): # 完成设置
 	AudioManager.play_audio("Interaction") # 点击音效

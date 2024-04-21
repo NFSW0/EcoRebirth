@@ -24,7 +24,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"HeaderMini"
+theme_type_variation = &"HeaderSmall"
 text = "New Archive"
 
 [node name="OptionBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]

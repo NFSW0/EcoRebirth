@@ -1,0 +1,86 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5gcpqq4rh3t8"]
+
+[ext_resource type="Script" path="res://mod/ecorebirth/scripts/multi_host.gd" id="1_becc3"]
+
+[node name="MultiHost" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_becc3")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "HostGame"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OptionBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/OptionBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/OptionBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Max Connections"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MaxConnections" type="LineEdit" parent="CenterContainer/VBoxContainer/OptionBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "5"
+alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/VBoxContainer/OptionBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/OptionBox/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Port"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Port" type="LineEdit" parent="CenterContainer/VBoxContainer/OptionBox/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "12766"
+alignment = 1
+
+[node name="Host" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Host"
+
+[node name="Back" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
+
+[connection signal="focus_entered" from="CenterContainer/VBoxContainer/OptionBox/HBoxContainer/MaxConnections" to="." method="_on_max_connections_focus_entered"]
+[connection signal="text_changed" from="CenterContainer/VBoxContainer/OptionBox/HBoxContainer/MaxConnections" to="." method="_on_max_connections_text_changed"]
+[connection signal="text_submitted" from="CenterContainer/VBoxContainer/OptionBox/HBoxContainer/MaxConnections" to="." method="_on_max_connections_text_submitted"]
+[connection signal="focus_entered" from="CenterContainer/VBoxContainer/OptionBox/HBoxContainer2/Port" to="." method="_on_port_focus_entered"]
+[connection signal="text_changed" from="CenterContainer/VBoxContainer/OptionBox/HBoxContainer2/Port" to="." method="_on_port_text_changed"]
+[connection signal="text_submitted" from="CenterContainer/VBoxContainer/OptionBox/HBoxContainer2/Port" to="." method="_on_port_text_submitted"]
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/Host" to="." method="_on_host_mouse_entered"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/Back" to="." method="_on_back_mouse_entered"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]

@@ -6,10 +6,10 @@ extends Control
 const archives_data_name = "ecorebirth_archive" # 存档集合数据名
 var archive_data = ArchiveData.new() # 新建存档数据
 var edit_line_has_focus = false # 是否有焦点 用于处理点击数字键和输入框冲突
-var archive_name_ui
-var archive_seed_ui
-var archive_circle_time_ui
-var archive_difficulty_ui
+var archive_name_ui # 名称UI
+var archive_seed_ui # 种子UI
+var archive_circle_time_ui # 周期选择UI
+var archive_difficulty_ui # 难度选择UI
 @onready var option_box = %OptionBox # 选项盒
 @onready var create = %Create # 创建按钮
 @onready var cancel = %Cancel # 取消按钮
@@ -22,6 +22,8 @@ func _input(event): # 通过数字实现快速点击对应按钮
 		_handle_numeric_input(event) # 处理数字输入的函数
 	elif event.is_action_pressed("ui_cancel"): # ESC输入
 		_on_cancel_pressed() # 触发取消按钮的点击事件
+	elif event.is_action_pressed("ui_accept") and not edit_line_has_focus: # 按下回车且没有焦点时
+		_on_create_pressed() # 触发创建存档事件
 
 func _handle_numeric_input(event: InputEventKey): # 处理数字输入
 	var key_str = event.as_text() # 获取字符化的按键
@@ -95,8 +97,6 @@ func _refresh(): # 刷新显示
 		)
 	archive_difficulty_ui = archive_difficulty
 	option_box.add_child(archive_difficulty)
-
-# 保存新存档数据
 
 #region 创建和取消按钮
 func _on_cancel_pressed():
