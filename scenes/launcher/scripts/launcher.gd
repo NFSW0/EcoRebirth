@@ -116,6 +116,7 @@ func _register_resources(): # 注册资源
 		await _register_texture_resource(register_data["texture"]) # 注册外部材质
 		await _register_setting_resource(register_data["setting"]) # 注册外部设置
 		await _register_local_resource(register_data["local"]) # 注册外部翻译
+		await _register_effect_resource(register_data["effect"]) # 注册外部特效
 
 func _load_register_data(mod_path : String) -> Dictionary: # 获取pack.json存储的注册数据
 	var register_data = {} # 待存储解析的数据
@@ -173,6 +174,14 @@ func _register_local_resource(_local_resource): # 注册本地化翻译
 		_add_message(local_data["path"])
 		TranslationServer.add_translation(load(local_data["path"]))
 		await get_tree().create_timer(interval).timeout
+
+func _register_effect_resource(_effect_resource): # 注册特效
+	for effect_data in _effect_resource:
+		_add_message(effect_data["path"])
+		if ResourceLoader.exists(effect_data["path"]):
+			var _effect_data = load(effect_data["path"])
+			EffectManager.register_effect(effect_data["name"], _effect_data)
+			await get_tree().create_timer(interval).timeout
 
 func _launcher_game(_main_scene_path: String) -> String: # 进入开始菜单(标题屏幕)
 	if not ResourceLoader.exists(_main_scene_path):

@@ -34,5 +34,8 @@
 ],
 "local": [
 {"path":"res://mod/ecorebirth/local/zh_CN/LC_MESSAGES/zh_CN.po"},
-]
+],
+"effect": [
+{"name":"ExampleEffect", "path":"res://mod/ecorebirth/effect/example_effect.tres"},
+],
 }
