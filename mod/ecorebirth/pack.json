@@ -5,6 +5,8 @@
 {"name":"Negative", "path":"res://mod/ecorebirth/audio/Negative.ogg", "bus":"SFX"},
 {"name":"Positive", "path":"res://mod/ecorebirth/audio/Positive.ogg", "bus":"SFX"},
 {"name":"Interaction", "path":"res://mod/ecorebirth/audio/Interaction.ogg", "bus":"SFX"},
+{"name":"Relax", "path":"res://mod/ecorebirth/audio/Realx.mp3", "bus":"BGM"},
+{"name":"Fight", "path":"res://mod/ecorebirth/audio/Fight.mp3", "bus":"BGM"},
 ],
 "ui": [
 {"name":"Hyperlinks", "path": "res://mod/ecorebirth/ui/hyperlinks.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"ui_test"},
