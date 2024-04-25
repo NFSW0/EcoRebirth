@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://crm0p5eh1mfqn"]
+
+[ext_resource type="Texture2D" uid="uid://cvpl2o6i8t5o2" path="res://mod/ecorebirth/effect/example_effect/Example_Effect.png" id="1_gkbac"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5530d"]
+atlas = ExtResource("1_gkbac")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o0wvf"]
+atlas = ExtResource("1_gkbac")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56527"]
+atlas = ExtResource("1_gkbac")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ks77"]
+atlas = ExtResource("1_gkbac")
+region = Rect2(192, 0, 64, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5530d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o0wvf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_56527")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ks77")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]

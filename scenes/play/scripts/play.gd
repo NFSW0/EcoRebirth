@@ -5,4 +5,4 @@ extends Node
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		EffectManager.play_effect("ExampleEffect", func(effect_node):(effect_node as AnimatedSprite2D).position = Vector2i(100,50))
+		EffectManager.play_effect("ExampleEffect", Vector2i(100,50))

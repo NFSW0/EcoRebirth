@@ -179,8 +179,9 @@ func _register_effect_resource(_effect_resource): # 注册特效
 	for effect_data in _effect_resource:
 		_add_message(effect_data["path"])
 		if ResourceLoader.exists(effect_data["path"]):
-			var _effect_data = load(effect_data["path"])
-			EffectManager.register_effect(effect_data["name"], _effect_data)
+			var _position = Vector2(effect_data["position_x"], effect_data["position_y"])
+			var _size = Vector2(effect_data["size_x"], effect_data["size_y"])
+			EffectManager.register_effect(effect_data["name"], effect_data["path"], _position, _size)
 			await get_tree().create_timer(interval).timeout
 
 func _launcher_game(_main_scene_path: String) -> String: # 进入开始菜单(标题屏幕)
