@@ -5,4 +5,4 @@ extends Node
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		EffectManager.play_effect("ExampleEffect", Vector2i(100,50))
+		EffectManager.play_effect("ExampleEffect", Vector2i(100,50)) # 特效功能测试

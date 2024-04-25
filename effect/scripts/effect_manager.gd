@@ -18,11 +18,14 @@ func register_effect(effect_name: String, effect_resource_path: String, position
 	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 记录日志
 	return final_name # 返回最终注册的名称
 
-func play_effect(effect_name: String, position: Vector2): ## 播放特效 接收特效名和回调函数 回调函数应接收一个Node类型的参数 通常用于位置修正
+func play_effect(effect_name: String, position: Vector2): # 播放特效 接收特效名和回调函数 回调函数应接收一个Node类型的参数 通常用于位置修正
 	if not multiplayer.is_server(): # 如果是客户端
 		rpc_id(1, "_play_effect", effect_name, position) # 向主机发出请求
 	else: # 如果是服务端
 		_play_effect(effect_name, position) # 直接调用方法
+
+func get_effect_data(effect_name: String) -> Dictionary: # 获取特效数据
+	return effect_resources[effect_name] # 返回特效数据
 
 #region 私有方法
 func _generate_final_name(effect_name: String) -> String: # 生成唯一名称
@@ -33,23 +36,19 @@ func _generate_final_name(effect_name: String) -> String: # 生成唯一名称
 		count += 1
 	return final_name
 
-func _initialize_and_play(_data) -> Node: # 初始化并播放特效并返回节点
+func _initialize_and_play(effect_name) -> Node: # 初始化并播放特效并返回节点
 	var effect_instance = effect_model.instantiate() # 实例化
-	effect_instance.name = str(unique_id) # 设置名称为唯一编号
+	effect_instance.name = effect_name + "_" + str(unique_id) # 设置名称为唯一编号
 	unique_id += 1 # 累加编号
+	effect_instance.effect_data = effect_resources[effect_name] # 设置特效数据
 	return effect_instance # 返回特效实例节点
 
 @rpc("any_peer","call_local") # 自我生效 客机可请求
 func _play_effect(effect_name: String, _position: Vector2) -> Node: # RPC播放特效
 	if multiplayer.is_server(): # 仅主机执行
 		if effect_name in effect_resources: # 如果特效已注册
-			var node = spawn(effect_resources[effect_name]) # 等效于_initialize_and_play(effect_resources[effect_name])
-			var sprite_frames: SpriteFrames = load(effect_resources[effect_name]["effect_resource_path"]) # 初始化参数-帧动画
-			var position = effect_resources[effect_name]["position"] # 初始化参数-源点
-			var size = effect_resources[effect_name]["size"] # 初始化参数-尺寸
+			var node = spawn(effect_name) # 等效于_initialize_and_play(effect_name)
 			node.position = _position # 特效位置修正
-			node.init(sprite_frames, Rect2(position, size)) # 初始化
-			node.play("default") # 播放动画
 			return node # 返回特效
 		else: # 如果特效未注册
 			var message = "(特效缺失)Error: Effect resource '%s' not found." % effect_name # 生成错误信息

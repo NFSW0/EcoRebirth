@@ -1,43 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bbxg3qjpy0uis"]
+[gd_scene load_steps=3 format=3 uid="uid://bbxg3qjpy0uis"]
 
-[ext_resource type="Texture2D" uid="uid://cvpl2o6i8t5o2" path="res://mod/ecorebirth/effect/example_effect/Example_Effect.png" id="1_cibm8"]
 [ext_resource type="Script" path="res://effect/scenes/effect_model.gd" id="2_0v7pm"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qtl67"]
-atlas = ExtResource("1_cibm8")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mjt16"]
-atlas = ExtResource("1_cibm8")
-region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_okpo3"]
-atlas = ExtResource("1_cibm8")
-region = Rect2(128, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xtabc"]
-atlas = ExtResource("1_cibm8")
-region = Rect2(192, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_7h8gq"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qtl67")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mjt16")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_okpo3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xtabc")
-}],
-"loop": false,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jwjai"]
 properties/0/path = NodePath(".:position")
@@ -51,10 +14,7 @@ properties/2/spawn = true
 properties/2/replication_mode = 1
 
 [node name="EffectModel" type="AnimatedSprite2D"]
-sprite_frames = SubResource("SpriteFrames_7h8gq")
 autoplay = "default"
-frame = 3
-frame_progress = 1.0
 script = ExtResource("2_0v7pm")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
