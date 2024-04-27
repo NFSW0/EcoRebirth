@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1vasxrgipwgn"]
+
+[ext_resource type="Script" path="res://mod/ecorebirth/scripts/game_menu.gd" id="1_hj8ce"]
+
+[node name="GameMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hj8ce")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OptionBox" type="VBoxContainer" parent="CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ResumeGame" type="Button" parent="CenterContainer/OptionBox"]
+layout_mode = 2
+text = "Resume Game"
+
+[node name="Setting" type="Button" parent="CenterContainer/OptionBox"]
+layout_mode = 2
+text = "Setting"
+
+[node name="Exit" type="Button" parent="CenterContainer/OptionBox"]
+layout_mode = 2
+text = "Exit"
+
+[connection signal="mouse_entered" from="CenterContainer/OptionBox/ResumeGame" to="." method="_on_resume_game_mouse_entered"]
+[connection signal="pressed" from="CenterContainer/OptionBox/ResumeGame" to="." method="_on_resume_game_pressed"]
+[connection signal="mouse_entered" from="CenterContainer/OptionBox/Setting" to="." method="_on_setting_mouse_entered"]
+[connection signal="pressed" from="CenterContainer/OptionBox/Setting" to="." method="_on_setting_pressed"]
+[connection signal="mouse_entered" from="CenterContainer/OptionBox/Exit" to="." method="_on_exit_mouse_entered"]
+[connection signal="pressed" from="CenterContainer/OptionBox/Exit" to="." method="_on_exit_pressed"]

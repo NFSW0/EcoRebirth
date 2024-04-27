@@ -2,18 +2,24 @@ class_name SettingMenu
 extends Control
 # 加载设置选项 响应选择
 
+var other_menu_name # 呼出设置菜单的其他菜单
 var option_path = "" # 选项路径
 @onready var option_box = %OptionBox # 选项盒
 @onready var back = %Back # 返回按钮
 
+func on_ui_loaded(requester): # 当此界面被请求显示时回调 传入请求者
+	other_menu_name = requester.name
+
 func _ready():
 	_refresh_optioins()
 
-func _input(event): # 通过数字实现快速点击对应按钮
-	if event.is_released() and event is InputEventKey: # 键盘松开
-		_handle_numeric_input(event) # 处理数字输入的函数
-	elif event.is_action_pressed("ui_cancel"): # ESC输入
+func _unhandled_input(event): # 通过数字实现快速点击对应按钮
+	get_viewport().set_input_as_handled() # 阻止事件进一步传递
+	if event.is_action_released("ui_cancel"): # ESC输入
 		_on_back_pressed() # 触发返回
+	elif event.is_released() and event is InputEventKey: # 键盘松开
+		_handle_numeric_input(event) # 处理数字输入的函数
+	
 
 func _handle_numeric_input(event: InputEventKey): # 处理数字输入
 	var key_str = event.as_text() # 获取字符化的按键
@@ -164,7 +170,7 @@ func _on_option_button_pressed(value): # 完成设置
 #region 返回按钮
 func _on_back_pressed(): # 返回按钮点击事件
 	AudioManager.play_audio("Interaction") # 点击音效
-	UIManager.get_ui("MainMenu", self) # 加载主菜单面板
+	UIManager.get_ui(other_menu_name, self) # 加载面板
 	DataManager.save_data() # 保存数据
 	_close()
 func _on_back_mouse_entered(): # 返回按钮触碰事件

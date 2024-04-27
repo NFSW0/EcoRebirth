@@ -25,7 +25,9 @@ func get_ui(ui_name: String, requester: Node) -> Node: # 获取UI
 			var ui_instance = (ui_registry[ui_name]["scene"] as PackedScene).instantiate() # 实例化UI场景
 			ui_instance.name = ui_name # 设置节点名称用于防止重复加载UI
 			add_child(ui_instance) # 添加为子物体
-			ui_registry[ui_name]["callback"].call(requester) # 加载回调，传递请求者
+			if ui_instance.has_method("on_ui_loaded"): # 如果界面实例有回调方法的实现
+				ui_instance.call("on_ui_loaded", requester) # 加载回调 传递请求者
+			ui_registry[ui_name]["callback"].call(requester) # 加载回调 传递请求者
 			return ui_instance # 返回UI实例
 	else: # 如果UI没注册
 		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), "UI not found: %s" % ui_name) # 输出日志

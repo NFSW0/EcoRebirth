@@ -22,6 +22,8 @@
 {"name":"MultiHost", "path": "res://mod/ecorebirth/ui/multi_host.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"ui_test"},
 {"name":"MultiJoin", "path": "res://mod/ecorebirth/ui/multi_join.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"ui_test"},
 {"name":"MessageBox", "path": "res://mod/ecorebirth/ui/message_box.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"ui_test"},
+{"name":"GameMenu", "path": "res://mod/ecorebirth/ui/game_menu.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"ui_test"},
+{"name":"GreyScreen", "path": "res://mod/ecorebirth/ui/grey_screen.tscn", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"ui_test"},
 ],
 "texture": [
 {"name":"GithubLogo", "path":"res://mod/ecorebirth/texture/GitHub_logo.png"},
