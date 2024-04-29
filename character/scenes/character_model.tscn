@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3ogtdccb8v2f"]
+
+[ext_resource type="Script" path="res://character/scripts/character_model.gd" id="1_a2neg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ogsbu"]
+radius = 5.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_y0yc1"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="CharacterModel" type="CharacterBody2D"]
+script = ExtResource("1_a2neg")
+
+[node name="BodyAndFace" type="Node2D" parent="."]
+
+[node name="Body" type="Sprite2D" parent="BodyAndFace"]
+unique_name_in_owner = true
+
+[node name="Face" type="Sprite2D" parent="BodyAndFace"]
+unique_name_in_owner = true
+position = Vector2(0, -20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ogsbu")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_y0yc1")

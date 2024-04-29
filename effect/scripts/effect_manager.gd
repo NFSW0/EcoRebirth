@@ -18,7 +18,7 @@ func register_effect(effect_name: String, effect_resource_path: String, position
 	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 记录日志
 	return final_name # 返回最终注册的名称
 
-func play_effect(effect_name: String, position: Vector2): # 播放特效 接收特效名和回调函数 回调函数应接收一个Node类型的参数 通常用于位置修正
+func play_effect(effect_name: String, position: Vector2): # 播放特效 接收角色数据和位置
 	if not multiplayer.is_server(): # 如果是客户端
 		rpc_id(1, "_play_effect", effect_name, position) # 向主机发出请求
 	else: # 如果是服务端

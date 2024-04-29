@@ -159,7 +159,7 @@ func _register_texture_resource(_texture_resource): # 注册材质
 		_add_message(texture["path"])
 		if ResourceLoader.exists(texture["path"]):
 			var _texture = load(texture["path"])
-			TextureManager.register_texture(texture["name"], _texture)
+			TextureManager.register_texture(texture["name"], _texture, texture["tag"])
 			await get_tree().create_timer(interval).timeout
 
 func _register_setting_resource(_setting_resource): # 注册设置

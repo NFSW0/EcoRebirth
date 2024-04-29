@@ -28,4 +28,5 @@ theme_type_variation = &"HeaderSmall"
 text = "Select Role"
 
 [node name="RoleBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
