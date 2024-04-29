@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var character_data = {"body":"Body1", "face":"Face1"}
+var character_data
 @onready var body = %Body
 @onready var face = %Face
 
@@ -20,5 +20,7 @@ func _send_character_data():
 @rpc("reliable")
 func _init_character_data(_character_data):
 	character_data = _character_data
-	body.texture = TextureManager.get_texture(character_data["body"])
+	var body_texture = TextureManager.get_texture(character_data["body"])
+	body.offset = Vector2(0, -body_texture.get_height() / 2)
+	body.texture = body_texture
 	face.texture = TextureManager.get_texture(character_data["face"])

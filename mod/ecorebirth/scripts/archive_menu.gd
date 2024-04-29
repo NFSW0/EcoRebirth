@@ -42,9 +42,9 @@ func _add_archive_option(archive_array:Dictionary): # 添加存档选项
 			AudioManager.play_audio("Interaction") # 点击音效
 			var archive_data = archive_array[archive] # 读取存档数据
 			if DataManager.has_registered("using_archive_data"): # 设置为使用中的存档
-				DataManager.set_data("using_archive_data",archive_data)
-			else:
-				DataManager.register_data("using_archive_data",archive_data)
+				DataManager.set_data("using_archive_data",archive_data) # 更新数据
+			else: # 如果没注册
+				DataManager.register_data("using_archive_data",archive_data) # 注册数据
 			get_tree().change_scene_to_file(play_scene_path) # 场景跳转
 			_close() # 关闭此面板
 			)
@@ -56,7 +56,7 @@ func _add_new_archive_option(): # 添加新建选项
 	button.text = "+" # 修改按钮文字
 	button.connect("pressed", func(): # 设置按钮点击事件
 		AudioManager.play_audio("Interaction") # 点击音效
-		UIManager.get_ui("NewArchiveMenu", self) # 加载主菜单面板
+		UIManager.get_ui("NewArchiveMenu", self) # 加载新建存档面板
 		_close() # 关闭此面板
 		)
 	button.connect("mouse_entered", func():AudioManager.play_audio("Focus")) # 设置鼠标触碰事件

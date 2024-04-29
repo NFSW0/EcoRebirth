@@ -7,10 +7,14 @@ var unique_id = 0 # 唯一编号 用于设置唯一名称
 
 
 func _ready():
-	multiplayer_spawner.spawn_function = _generate_character # 设置多人生成方法
 	if not multiplayer.is_server(): # 如果是客户端
 		await multiplayer.connected_to_server # 等待连接完成
-	generate_character({"body":"Body1", "face":"Face1"},Vector2(50,50)) # 测试角色生成
+	multiplayer_spawner.spawn_function = _generate_character # 设置多人生成方法
+	# 生成地图
+	var role_menu = UIManager.get_ui("RoleMenu",self) # 打开角色选择界面
+	await role_menu.player_selected # 等待角色选择完成
+	var using_player_data = DataManager.get_data("using_player_data",{"body":"Body1", "face":"Face1"}) # 获取角色数据
+	generate_character(using_player_data,Vector2(50,50)) # 生成角色
 
 
 func _unhandled_input(event):

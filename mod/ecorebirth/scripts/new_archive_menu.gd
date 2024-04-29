@@ -18,7 +18,7 @@ func _ready():
 	_refresh()
 
 func _input(event): # 通过数字实现快速点击对应按钮
-	if event.is_released() and event is InputEventKey: # 键盘松开
+	if event.is_released() and event is InputEventKey and not edit_line_has_focus: # 键盘松开
 		_handle_numeric_input(event) # 处理数字输入的函数
 	elif event.is_action_pressed("ui_cancel"): # ESC输入
 		_on_cancel_pressed() # 触发取消按钮的点击事件

@@ -5,5 +5,7 @@
 [node name="Play" type="Node"]
 script = ExtResource("1_oo0f2")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath(".")
