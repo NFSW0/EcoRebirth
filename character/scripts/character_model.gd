@@ -1,8 +1,13 @@
 extends CharacterBody2D
 
+signal init_completed()
 var character_data
 @onready var body = %Body
 @onready var face = %Face
+
+@rpc("any_peer","call_local","reliable")
+func set_authority(peer_id):
+	set_multiplayer_authority(peer_id)
 
 func _ready() -> void:
 	if multiplayer.is_server():
@@ -24,3 +29,4 @@ func _init_character_data(_character_data):
 	body.offset = Vector2(0, -body_texture.get_height() / 2)
 	body.texture = body_texture
 	face.texture = TextureManager.get_texture(character_data["face"])
+	init_completed.emit()
