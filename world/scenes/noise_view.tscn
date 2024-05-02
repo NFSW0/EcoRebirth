@@ -1,0 +1,92 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7qmds355vtug"]
+
+[ext_resource type="Script" path="res://world/scripts/noise_view.gd" id="1_rho6a"]
+
+[node name="NoiseView" type="VBoxContainer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -333.0
+offset_top = -221.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("1_rho6a")
+
+[node name="CellularDistanceFunction" type="OptionButton" parent="."]
+layout_mode = 2
+tooltip_text = "确定如何计算到最近/第二最近点的距离"
+item_count = 4
+selected = 0
+popup/item_0/text = "到最近点的欧几里得距离"
+popup/item_0/id = 0
+popup/item_1/text = "到最近点的欧几里得距离的平方"
+popup/item_1/id = 1
+popup/item_2/text = "到最近点的曼哈顿距离（出租车度量法）"
+popup/item_2/id = 2
+popup/item_3/text = "混合，以给出弯曲的单元格边界"
+popup/item_3/id = 3
+
+[node name="CellularJitter" type="SpinBox" parent="."]
+layout_mode = 2
+tooltip_text = "一个点可以离开其栅格位置的最大距离。对于偶数栅格，设置为 0。"
+step = 0.01
+value = 1.0
+
+[node name="CellularReturnType" type="OptionButton" parent="."]
+layout_mode = 2
+item_count = 7
+selected = 1
+popup/item_0/text = "蜂窝单元格距离函数，将为单元格内的所有点返回相同的值"
+popup/item_0/id = 0
+popup/item_1/text = "蜂窝单元格距离函数，将返回一个由到最近点的距离确定的值"
+popup/item_1/id = 1
+popup/item_2/text = "蜂窝单元格距离函数，将返回到第二最近点的距离。"
+popup/item_2/id = 2
+popup/item_3/text = "将最近点的距离与次近点的距离相加"
+popup/item_3/id = 3
+popup/item_4/text = "将最近点的距离与次近点的距离相减"
+popup/item_4/id = 4
+popup/item_5/text = "将最近点的距离与次近点的距离相乘"
+popup/item_5/id = 5
+popup/item_6/text = "将最近点的距离与次近点的距离相除"
+popup/item_6/id = 6
+
+[node name="DomainWarpEnabled" type="CheckBox" parent="."]
+layout_mode = 2
+tooltip_text = "用于扭曲空间"
+text = "用于扭曲空间"
+
+[node name="DomainWarpType" type="OptionButton" parent="."]
+layout_mode = 2
+tooltip_text = "设置扭曲算法"
+item_count = 3
+selected = 0
+popup/item_0/text = "使用单纯形噪声算法，对域进行扭曲"
+popup/item_0/id = 0
+popup/item_1/text = "使用简化版的单纯形噪声算法，对域进行扭曲"
+popup/item_1/id = 1
+popup/item_2/text = "使用简单的噪声栅格（不像其他方法那样平滑，但性能更高），对域进行扭曲"
+popup/item_2/id = 2
+
+[node name="DomainWarpFrequency" type="SpinBox" parent="."]
+layout_mode = 2
+tooltip_text = "扭曲空间的噪音频率。低频产生平滑的噪声，而高频产生更粗糙、颗粒状更明显的噪声"
+max_value = 1.0
+step = 0.01
+value = 0.05
+
+[node name="DomainWarpAmplitude" type="SpinBox" parent="."]
+layout_mode = 2
+tooltip_text = "设置距原点的最大扭曲距离"
+value = 30.0
+
+[node name="DomainWarpFractalType" type="OptionButton" parent="."]
+layout_mode = 2
+
+[node name="FractalType" type="OptionButton" parent="."]
+layout_mode = 2
+
+[node name="NoiseType" type="OptionButton" parent="."]
+layout_mode = 2

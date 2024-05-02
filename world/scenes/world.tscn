@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://btegrh0c2tbu1"]
 
-[ext_resource type="Script" path="res://world/world.gd" id="1_e7i5s"]
+[ext_resource type="Script" path="res://world/scripts/world.gd" id="1_e7i5s"]
 [ext_resource type="TileSet" uid="uid://bqlhb57wy3dfq" path="res://world/ecorebirth_tile_set.tres" id="2_f7oug"]
 
 [node name="World" type="Node2D"]
