@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://brnilts8at8v1"]
+
+[ext_resource type="Script" path="res://world/scripts/world_2.gd" id="1_mmbyy"]
+[ext_resource type="TileSet" uid="uid://bqlhb57wy3dfq" path="res://world/ecorebirth_tile_set.tres" id="2_03bju"]
+
+[node name="World2" type="Node2D"]
+script = ExtResource("1_mmbyy")
+
+[node name="TileMap" type="TileMap" parent="."]
+y_sort_enabled = true
+tile_set = ExtResource("2_03bju")
+format = 2
+layer_0/name = "preview_layer"
+layer_0/y_sort_enabled = true
+layer_0/z_index = 1
+layer_1/name = "wall_layer"
+layer_1/y_sort_enabled = true
+layer_1/tile_data = PackedInt32Array(6, 65537, 0, 18, 65537, 0)
+layer_2/name = "ground_layer"
+layer_2/y_sort_enabled = true
+layer_2/z_index = -1
+layer_2/tile_data = PackedInt32Array(0, 65538, 0, 1, 65538, 0, 2, 65538, 0, 3, 65538, 0, 4, 65538, 0, 5, 65538, 0, -65531, 65538, 0, -65530, 65538, 0, -65529, 65538, 0, 7, 65538, 0, 6, 65538, 0, 65542, 65538, 0, 65541, 65538, 0, 65543, 65538, 0, 8, 65538, 0, 9, 65538, 0, 10, 65538, 0, 11, 65538, 0, 12, 65538, 0, 13, 65538, 0, 14, 65538, 0, 15, 65538, 0, 16, 65538, 0, 17, 65538, 0, -65519, 65538, 0, -65518, 65538, 0, 18, 65538, 0, 19, 65538, 0, 65554, 65538, 0, 65553, 65538, 0, 65555, 65538, 0, -65517, 65538, 0)

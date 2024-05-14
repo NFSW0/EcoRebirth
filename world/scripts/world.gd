@@ -4,8 +4,9 @@ signal init_completed() # 初始化完成信号
 const CHUNK_SIZE = 16 # 区块大小 用于划分区块
 const TILE_HEIGHT = 16 # 瓦片大小 用于玩家坐标转瓦片坐标
 const TILE_WIDTH = 32 # 瓦片大小 用于玩家坐标转瓦片坐标
+const environment_noise_resource_path = "res://world/envionment_niose.tres" # 环境噪声资源路径
 var world_data := {"seed":"123"} # 世界数据 从存档数据获取
-var noise = FastNoiseLite.new() # 创建噪声资源 用于随机化生成
+var noise: FastNoiseLite # 创建噪声资源 用于随机化生成
 var ground_map_data = {} # 用于存储区块数据的字典
 var loaded_chunk_center # 记录上次区块加载中心 用于避免重复加载
 var old_chunk_array : Array # 记录加载的区块
@@ -39,7 +40,7 @@ func unload_chunk(chunk_pos):
 			var world_y = chunk_pos.y * CHUNK_SIZE + y
 			tile_map_ground.set_cell(0, Vector2i(world_x, world_y), -1) # 清除TileMap中的瓦片
 
-#region 多人准备
+#region 多人
 func _multi_ready():
 	if not multiplayer.is_server(): # 如果是客户端
 		await multiplayer.connected_to_server # 等待连接完成
@@ -61,13 +62,9 @@ func _init_world_data(_world_data):
 	init_completed.emit()
 #endregion
 
-#region 噪声与区块生成
+#region 噪声准备与区块生成
 func _noise_ready(): # 准备噪声生成器
-	noise.noise_type = FastNoiseLite.TYPE_CELLULAR # 设置噪声类型为蜂窝
-	noise.cellular_distance_function = FastNoiseLite.DISTANCE_EUCLIDEAN # 设置蜂窝噪声的距离计算方式
-	noise.cellular_return_type = FastNoiseLite.RETURN_DISTANCE # 设置蜂窝返回类型为距离
-	noise.frequency = 0.01 # 调整噪声的频率
-	noise.cellular_jitter = 1.0 # 可选：调整Jitter，让蜂窝图更不规则
+	noise = load(environment_noise_resource_path) # 加载噪声资源
 	noise.seed = hash(world_data["seed"]) + rand_from_seed(hash(world_data["seed"]))[0] # 可选：设置种子以获取可重复的结果
 
 func _generate_chunk(chunk_pos): # 生成特定区块的瓦片地图数据
@@ -82,7 +79,7 @@ func _generate_chunk(chunk_pos): # 生成特定区块的瓦片地图数据
 	return chunk
 
 func _get_tile_type_based_on_noise(noise_value): # 基于噪声值决定瓦片类型
-	if noise_value < 0.1:
+	if noise_value < 0.01:
 		return Vector2i(0, 0)
 	elif noise_value < 0.25:
 		return Vector2i(1, 0)
