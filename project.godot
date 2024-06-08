@@ -29,6 +29,7 @@ TextureManager="*res://texture/scripts/texture_manager.gd"
 SettingManager="*res://setting/scripts/setting_manager.gd"
 GameManager="*res://game/scripts/game_manager.gd"
 EffectManager="*res://effect/scripts/effect_manager.gd"
+EcoMultiSpawner="*res://multi/scripts/eco_multi_spawner.gd"
 
 [display]
 

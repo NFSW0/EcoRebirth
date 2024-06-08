@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://l72ilkhs66m4"]
 
 [ext_resource type="Script" path="res://scenes/play/scripts/play.gd" id="1_oo0f2"]
-[ext_resource type="PackedScene" uid="uid://btegrh0c2tbu1" path="res://world/scenes/world.tscn" id="2_imjsg"]
+[ext_resource type="PackedScene" uid="uid://brnilts8at8v1" path="res://world/scenes/world_2.tscn" id="3_en3dj"]
 
 [node name="Play" type="Node"]
 script = ExtResource("1_oo0f2")
@@ -9,7 +9,7 @@ script = ExtResource("1_oo0f2")
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(480, 270)
 
-[node name="World" parent="." instance=ExtResource("2_imjsg")]
+[node name="World2" parent="." instance=ExtResource("3_en3dj")]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath(".")

@@ -11,7 +11,7 @@ func generate_chunk(chunk_pos: Vector2i) -> Chunk:
 	var map_grids: Dictionary = chunk_data.get("map_grids",{})
 	_traverse_chunk(chunk_pos, func(map_pos):
 		var map_grid: MapGrid = map_grids.get(map_pos, MapGrid.new(map_pos))
-		var layer_data: Dictionary = {"source_id": 2, "atlas_coords": Vector2i(1, 0)}
+		var layer_data: Dictionary = {"source_id": 1, "atlas_coords": Vector2i(1, 0)}
 		map_grid.update_grid_data("wall_layer", layer_data)
 		map_grids[map_pos] = map_grid
 		)
