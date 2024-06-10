@@ -1,10 +1,15 @@
 class_name _EnvironmentManager
 extends Node
-# 注册环境和有关数据 用于生成世界时设置环境
+# 环境管理器 注册环境和有关数据 用于生成世界时设置环境
 
 const environment_noise_resource_path = "res://world/envionment_niose.tres" # 环境噪声资源路径
 var noise: FastNoiseLite # 噪声生成器
-var environment_kinds := {} # 环境种类
+var environment_kinds := {
+"环境1":{"name":"岩石", "cell_data":{"source_id": 2, "atlas_coords": Vector2i(0, 0)}},
+"环境2":{"name":"草地", "cell_data":{"source_id": 2, "atlas_coords": Vector2i(1, 0)}},
+"环境3":{"name":"戈壁", "cell_data":{"source_id": 2, "atlas_coords": Vector2i(2, 0)}},
+"环境4":{"name":"河流", "cell_data":{"source_id": 2, "atlas_coords": Vector2i(3, 0)}},
+}
 
 func _ready():
 	noise = load(environment_noise_resource_path) # 加载噪声资源
@@ -16,6 +21,19 @@ func register_environment(environment_name: String, environment_data: Dictionary
 	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 记录日志
 	return final_name
 
+func get_environment_data(noise_seed: int, pos: Vector2) -> Dictionary:
+	noise.seed = noise_seed
+	var noise_value = noise.get_noise_2d(pos.x, pos.y)
+	return _get_environment_data_by_noise_value(noise_value)
+
+func get_environment_array(noise_seed: int, pos_array: Array[Vector2]) -> Array:
+	noise.seed = noise_seed
+	var environment_array = []
+	for pos in pos_array:
+		var noise_value = noise.get_noise_2d(pos.x, pos.y)
+		environment_array.append(_get_tile_type_based_on_noise(noise_value))
+	return environment_array
+
 func _generate_final_name(environment_name):
 	var final_name = environment_name # 存储最终注册的名称
 	var count = 1 # 用于循环改进名称
@@ -24,20 +42,22 @@ func _generate_final_name(environment_name):
 		count += 1 # 循环变量
 	return final_name # 返回最终注册的名称
 
-func get_environment_array(noise_seed: int, pos_array: Array[Vector2]) -> Array:
-	var environment_array = []
-	noise.seed = noise_seed
-	for pos in pos_array:
-		var noise_value = noise.get_noise_2d(pos.x, pos.y)
-		environment_array.append(_get_tile_type_based_on_noise(noise_value))
-	return environment_array
-
-func _get_tile_type_based_on_noise(noise_value): # 基于噪声值决定瓦片类型
+func _get_tile_type_based_on_noise(noise_value) -> Dictionary: # 基于噪声值决定瓦片类型
 	if noise_value < 0.1:
-		return "环境1"
+		return environment_kinds["环境1"]["cell_data"]
 	elif noise_value < 0.25:
-		return "环境2"
+		return environment_kinds["环境2"]["cell_data"]
 	elif noise_value < 0.6:
-		return "环境3"
+		return environment_kinds["环境3"]["cell_data"]
 	else:
-		return "环境4"
+		return environment_kinds["环境4"]["cell_data"]
+
+func _get_environment_data_by_noise_value(noise_value) -> Dictionary:
+	if noise_value < 0.1:
+		return environment_kinds["环境1"]
+	elif noise_value < 0.25:
+		return environment_kinds["环境2"]
+	elif noise_value < 0.6:
+		return environment_kinds["环境3"]
+	else:
+		return environment_kinds["环境4"]

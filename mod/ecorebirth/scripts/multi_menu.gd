@@ -7,7 +7,7 @@ extends Control
 @onready var join_game = %JoinGame # 加入游戏
 
 func _ready():
-	multiplayer.multiplayer_peer.close() # 清理可能的占位
+	multiplayer.multiplayer_peer = null # 清理可能的占位
 
 func _close():
 	queue_free()

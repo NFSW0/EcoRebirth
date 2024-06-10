@@ -1,8 +1,9 @@
 extends Node
 
-# UI界面-主菜单、版本号、快捷链接的回调函数
-static func ui_test(requester : Node): # UI加载的静态回调函数 也可以通过在UI脚本中加入on_ui_loaded(requester)实现
-	print("Callable Test Load By %s" % requester.name)
+# UI加载的静态回调函数 也可以通过在UI脚本中加入on_ui_loaded(requester)实现
+static func ui_test(_requester : Node):
+	#print("Callable Test Load By %s" % requester.name)
+	pass
 
 
 

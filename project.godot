@@ -30,6 +30,7 @@ SettingManager="*res://setting/scripts/setting_manager.gd"
 GameManager="*res://game/scripts/game_manager.gd"
 EffectManager="*res://effect/scripts/effect_manager.gd"
 EcoMultiSpawner="*res://multi/scripts/eco_multi_spawner.gd"
+EcoMultiManager="*res://multi/scripts/eco_multi_manager.gd"
 
 [display]
 
@@ -39,7 +40,6 @@ window/size/window_width_override=960
 window/size/window_height_override=540
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/size/always_on_top.editor=true
 
 [gui]
 

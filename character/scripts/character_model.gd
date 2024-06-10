@@ -14,8 +14,10 @@ func _ready() -> void:
 	body.texture = body_texture
 	face.texture = TextureManager.get_texture(character_data["face"])
 	
-	if is_multiplayer_authority():
-		get_tree().current_scene.set_player(self) # 设置本机角色，用于动态更新或协调游玩场景
+	if multiplayer.has_multiplayer_peer():
+		if not is_multiplayer_authority():
+			return
+	get_tree().current_scene.set_player(self) # 设置本机角色，用于动态更新或协调游玩场景
 
 func _input(event):
 	if event.is_action_pressed("main_interaction"):

@@ -12,6 +12,7 @@ var version_number : Control # 版本号面板
 @onready var exit =%Exit # 退出
 
 func _ready():
+	multiplayer.multiplayer_peer = null # 清理多人同步体
 	hyperlinks = UIManager.get_ui("Hyperlinks", self) # 快捷链接
 	version_number = UIManager.get_ui("VersionNumber", self) # 版本号
 

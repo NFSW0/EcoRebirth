@@ -47,10 +47,12 @@ func _on_setting_mouse_entered():
 
 
 func _on_exit_pressed():
+	multiplayer.multiplayer_peer = null
 	AudioManager.play_audio("Interaction") # 点击音效
 	get_tree().change_scene_to_file(main_scene_path) # 返回主菜单
 	for ui in UIManager.get_children():
-		ui._close()
+		if ui.has_method("_close"):
+			ui._close()
 	_close()
 func _on_exit_mouse_entered():
 	AudioManager.play_audio("Focus") # 聚焦音效

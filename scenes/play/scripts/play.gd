@@ -10,19 +10,17 @@ func set_player(_player : Node):
 func get_player():
 	return player
 #endregion
-var loaded_chunk_center
-@onready var multiplayer_spawner = $MultiplayerSpawner # 多人生成器
+var loaded_chunk_center # 用于检查是否需要更新地图加载
 @onready var world2 = $World2 # 世界节点
-
+@onready var multi_entity = $MultiEntity # 实体载体
 
 func _ready():
-	if not multiplayer.is_server(): # 如果是客户端
-		await multiplayer.connected_to_server # 等待连接完成
+	EcoMultiSpawner.reset_spawn_path(multi_entity.get_path()) # 重设置多人实体根节点
 	var role_menu = UIManager.get_ui("RoleMenu",self) # 打开角色选择界面
 	await role_menu.player_selected # 等待玩家完成角色选择
 	var using_player_data = DataManager.get_data("using_player_data",{"body":"Body1", "face":"Face1"}) # 获取选择的角色数据
 	using_player_data["resource_path"] = "res://character/scenes/character_model.tscn" # 补充预制体路径
-	EcoMultiSpawner.generate_entity(using_player_data) # 多人生成实体
+	EcoMultiSpawner.generate_entity(using_player_data) # 多人玩家实体
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"): # 打开灰幕与游戏菜单

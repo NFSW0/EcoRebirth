@@ -13,10 +13,11 @@ func _ready():
 
 #region 多人初始化
 func _multi_ready():
-	if multiplayer.is_server():
-		_init_entity_data(entity_data)
+	if multiplayer.has_multiplayer_peer():
+		if not multiplayer.is_server():
+			rpc_id(1, "_send_entity_data")
 	else:
-		rpc_id(1, "_send_entity_data")
+		_init_entity_data(entity_data)
 
 @rpc("any_peer", "reliable")
 func _send_entity_data():

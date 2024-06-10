@@ -2,7 +2,6 @@ class_name MultiJoin
 extends Control
 # 加入多人游戏 先进游玩场景再加入
 
-const play_scene_path = "res://scenes/play/scenes/play.tscn" # 游玩场景路径
 var edit_line_has_focus = false # 是否有焦点 用于处理点击数字键和输入框冲突
 @onready var ip = %IP # 最大连接数
 @onready var port = %Port # 端口
@@ -38,7 +37,7 @@ func _on_back_mouse_entered():
 	AudioManager.play_audio("Focus") # 聚焦音效
 #endregion
 
-#region 加入按钮
+#region 加入按钮 连接完成后通过多人管理器实现进入游玩场景
 func _on_join_pressed():
 	if ip.text.is_empty():
 		AudioManager.play_audio("Warning") # 警告音效
@@ -51,7 +50,6 @@ func _on_join_pressed():
 		UIManager.get_ui("MessageBox", self).send_message("Failed to join. Please check the ip or port.") # 发送提示信息
 		return
 	AudioManager.play_audio("Interaction") # 点击音效
-	get_tree().change_scene_to_file(play_scene_path) # 进入游玩场景
 	_close() # 关闭此面板
 	multiplayer.multiplayer_peer = peer
 	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), "加入多人游戏") # 记录日志

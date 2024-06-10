@@ -11,5 +11,4 @@ offset = Vector2(480, 270)
 
 [node name="World2" parent="." instance=ExtResource("3_en3dj")]
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath(".")
+[node name="MultiEntity" type="Node2D" parent="."]
