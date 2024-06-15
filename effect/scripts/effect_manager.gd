@@ -19,10 +19,11 @@ func register_effect(effect_name: String, effect_resource_path: String, position
 	return final_name # 返回最终注册的名称
 
 func play_effect(effect_name: String, position: Vector2): # 播放特效 接收角色数据和位置
-	if not multiplayer.is_server(): # 如果是客户端
-		rpc_id(1, "_play_effect", effect_name, position) # 向主机发出请求
-	else: # 如果是服务端
-		_play_effect(effect_name, position) # 直接调用方法
+	if multiplayer.has_multiplayer_peer(): # 如果是多人游戏
+		if not multiplayer.is_server(): # 如果是客户端
+			rpc_id(1, "_play_effect", effect_name, position) # 向主机发出请求
+			return
+	_play_effect(effect_name, position) # 直接调用方法
 
 func get_effect_data(effect_name: String) -> Dictionary: # 获取特效数据
 	return effect_resources[effect_name] # 返回特效数据
@@ -45,13 +46,19 @@ func _initialize_and_play(effect_name) -> Node: # 初始化并播放特效并返
 
 @rpc("any_peer","call_local") # 自我生效 客机可请求
 func _play_effect(effect_name: String, _position: Vector2) -> Node: # RPC播放特效
-	if multiplayer.is_server(): # 仅主机执行
-		if effect_name in effect_resources: # 如果特效已注册
-			var node = spawn(effect_name) # 等效于_initialize_and_play(effect_name)
-			node.position = _position # 特效位置修正
-			return node # 返回特效
-		else: # 如果特效未注册
-			var message = "(特效缺失)Error: Effect resource '%s' not found." % effect_name # 生成错误信息
-			LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), message) # 记录错误日志
-	return null # 返回空
+	# 有效检查
+	if not effect_name in effect_resources: # 如果特效已注册
+		var message = "(特效缺失)Error: Effect resource '%s' not found." % effect_name # 生成错误信息
+		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), message) # 记录错误日志
+		return null # 返回空
+	# 执行生成方法
+	var node = null
+	if multiplayer.has_multiplayer_peer(): # 如果是多人游戏
+		if not multiplayer.is_server(): return null # 主机检查
+		node = spawn(effect_name) # 等效于_initialize_and_play(effect_name)
+	else:
+		node = _initialize_and_play(effect_name) # 等效于_initialize_and_play(effect_name)
+		get_node(spawn_path).add_child(node)
+	node.position = _position # 特效位置修正
+	return node # 返回特效
 #endregion

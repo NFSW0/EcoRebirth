@@ -11,11 +11,14 @@ func generate_chunk(world_data: Dictionary, chunk_pos: Vector2i) -> Chunk:
 	var chunk_data: Dictionary = chunk.get_chunk_data()
 	# 获取当前区块的全部图格数据
 	var map_grids: Dictionary = chunk_data.get("map_grids",{})
+	
 	## 获取区块内图格坐标组
 	#var grid_pos_array = []
 	#_traverse_chunk(world_data, chunk_pos, func(map_pos):grid_pos_array.append(map_pos))
 	## 获取区块内图格数据组
 	#var grid_data_array = grid_pos_array.map(func(number):return map_grids.get(number, MapGrid.new(number)))
+	## 获取对应瓦片数据组
+	## 更新区块内图格数据
 	
 	# 更新图格数据 待被批处理替换
 	_traverse_chunk(world_data, chunk_pos, func(map_pos):

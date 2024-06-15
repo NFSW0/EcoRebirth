@@ -7,11 +7,12 @@ var effect_data # 特效数据
 
 ## 初始化
 func _ready() -> void:
-	if multiplayer.is_server():
-		_init_effect_data(effect_data)
-		play("default") # 播放动画
-	else:
-		rpc_id(1, "_send_effect_data")
+	if multiplayer.has_multiplayer_peer(): # 如果是多人游戏
+		if not multiplayer.is_server(): # 如果是客户端
+			rpc_id(1, "_send_effect_data")
+			return
+	_init_effect_data(effect_data)
+	play("default") # 播放动画
 
 ## 服务端-发送特效数据
 @rpc("any_peer", "reliable")
