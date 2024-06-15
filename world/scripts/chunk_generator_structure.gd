@@ -7,7 +7,7 @@ func _init(_chunk_generator:ChunkGenerator):
 
 func generate_chunk(world_data: Dictionary, chunk_pos: Vector2i) -> Chunk:
 	var chunk: Chunk = super.generate_chunk(world_data, chunk_pos)
-
+	# 获取区块数据
 	var chunk_data: Dictionary = chunk.get_chunk_data()
 	var map_grids: Dictionary = chunk_data.get("map_grids",{})
 	_traverse_chunk(world_data, chunk_pos, func(map_pos):

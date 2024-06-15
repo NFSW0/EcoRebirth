@@ -26,7 +26,7 @@ func get_environment_data(noise_seed: int, pos: Vector2) -> Dictionary:
 	var noise_value = noise.get_noise_2d(pos.x, pos.y)
 	return _get_environment_data_by_noise_value(noise_value)
 
-func get_environment_array(noise_seed: int, pos_array: Array[Vector2]) -> Array:
+func get_environment_array(noise_seed: int, pos_array: Array[Vector2i]) -> Array:
 	noise.seed = noise_seed
 	var environment_array = []
 	for pos in pos_array:
