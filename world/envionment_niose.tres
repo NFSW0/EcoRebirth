@@ -1,7 +1,8 @@
-[gd_resource type="FastNoiseLite" format=3]
+[gd_resource type="FastNoiseLite" format=3 uid="uid://csxxjtmx1tbiv"]
 
 [resource]
 noise_type = 2
+frequency = 0.04
 fractal_type = 0
 cellular_jitter = 0.97
 cellular_return_type = 0

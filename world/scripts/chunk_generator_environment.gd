@@ -17,7 +17,7 @@ func generate_chunk(world_data: Dictionary, chunk_pos: Vector2i) -> Chunk:
 	# 获取区块内图格数据组 [MapGrid]
 	var grid_data_array = grid_pos_array.map(func(number):return map_grids.get(number, MapGrid.new(number)))
 	# 获取对应瓦片数据组 [{{"source_id": 2, "atlas_coords": Vector2i(0, 0)}},{...}]
-	var cell_data_array = EnvironmentManager.get_environment_array(1, grid_pos_array)
+	var cell_data_array = EnvironmentManager.get_environment_array(world_data["seed"], grid_pos_array)
 	# 更新区块内图格数据
 	for index in grid_pos_array.size():
 		grid_data_array[index].update_grid_data("ground_layer", cell_data_array[index])

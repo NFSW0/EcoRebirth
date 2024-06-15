@@ -8,7 +8,7 @@ var loaded_chunks := {} # 已加载区块 用字典存放区块相关数据
 func _ready():
 	# TODO 获取世界数据
 	# 初始化区块生成器
-	chunk_generator = ChunkGenerator_Structure.new(ChunkGenerator_Environment.new(ChunkGenerator.new()))
+	chunk_generator = ChunkGenerator_NatureResource.new(ChunkGenerator_Environment.new(ChunkGenerator.new()))
 
 # 获取区块
 func get_chunk(chunk_pos: Vector2i) -> Chunk:

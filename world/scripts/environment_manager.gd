@@ -1,6 +1,7 @@
 class_name _EnvironmentManager
 extends Node
 # 环境管理器 注册环境和有关数据 用于生成世界时设置环境
+# 获取数据包含:环境类型名environment_name，环境数据environment_data，特定数据taget_data
 
 const environment_noise_resource_path = "res://world/envionment_niose.tres" # 环境噪声资源路径
 var noise: FastNoiseLite # 噪声生成器
@@ -43,9 +44,9 @@ func _generate_final_name(environment_name):
 	return final_name # 返回最终注册的名称
 
 func _get_tile_type_based_on_noise(noise_value) -> Dictionary: # 基于噪声值决定瓦片类型
-	if noise_value < 0.1:
+	if noise_value < 0.2:
 		return environment_kinds["环境1"]["cell_data"]
-	elif noise_value < 0.25:
+	elif noise_value < 0.4:
 		return environment_kinds["环境2"]["cell_data"]
 	elif noise_value < 0.6:
 		return environment_kinds["环境3"]["cell_data"]
