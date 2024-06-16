@@ -32,6 +32,9 @@ EffectManager="*res://effect/scripts/effect_manager.gd"
 EcoMultiSpawner="*res://multi/scripts/eco_multi_spawner.gd"
 EcoMultiManager="*res://multi/scripts/eco_multi_manager.gd"
 EnvironmentManager="*res://world/scripts/environment_manager.gd"
+NatureResouceManager="*res://world/scripts/nature_resouce_manager.gd"
+StructureManager="*res://world/scripts/structure_manager.gd"
+CreatureManager="*res://world/scripts/creature_manager.gd"
 
 [display]
 

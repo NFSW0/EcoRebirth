@@ -82,7 +82,7 @@ func _read_chunk(chunk_pos: Vector2i) -> Chunk:
 	chunk = chunk_generator.generate_chunk(world_data, chunk_pos)
 	return chunk
 # 保存区块
-func _save_chunk(chunk: Chunk) -> bool:
+func _save_chunk(_chunk: Chunk) -> bool:
 	# TODO 添加区块持久化数据保存逻辑
 	return true
 # 遍历区块
