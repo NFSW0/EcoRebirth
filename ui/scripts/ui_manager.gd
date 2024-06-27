@@ -4,13 +4,13 @@ extends CanvasLayer
 
 var ui_registry = {} # 存储所有注册的UI
 
-func register_ui(ui_name: String, scene: PackedScene, callback: Callable = func(_requester):) -> String: # 注册UI 会自动改进名称 返回最终注册的名称
+func register_ui(ui_name: String, scene: PackedScene) -> String: # 注册UI 会自动改进名称 返回最终注册的名称
 	var final_name = ui_name # 存储最终注册的名称
 	var count = 1 # 用于循环改进名称
 	while final_name in ui_registry: # 如果名称重复
 		final_name = "%s_%d" % [ui_name, count] # 改进名称
 		count += 1 # 循环变量
-	ui_registry[final_name] = {"scene": scene, "callback": callback} # 注册UI
+	ui_registry[final_name] = {"scene": scene} # 注册UI
 	var message = "已注册界面: %s %s" % [final_name, ui_registry[final_name]] # 生成日志信息
 	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 记录日志
 	return final_name # 返回最终注册的名称
@@ -27,7 +27,6 @@ func get_ui(ui_name: String, requester: Node) -> Node: # 获取UI
 			add_child(ui_instance) # 添加为子物体
 			if ui_instance.has_method("on_ui_loaded"): # 如果界面实例有回调方法的实现
 				ui_instance.call("on_ui_loaded", requester) # 加载回调 传递请求者
-			ui_registry[ui_name]["callback"].call(requester) # 加载回调 传递请求者
 			return ui_instance # 返回UI实例
 	else: # 如果UI没注册
 		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), "UI not found: %s" % ui_name) # 输出日志

@@ -36,6 +36,9 @@ func _unhandled_input(event):
 		EffectManager.play_effect("ExampleEffect", Vector2i(100,50)) # Space 特效功能测试
 	if event.is_action_pressed("primary_interact"):
 		player.position = get_global_mouse_position()
+	if event.is_action_pressed("secondary_interact"):
+		var debug_adjunct = AdjunctActive.new("eco_rebirth:debug",player,null,false,1,0,0,5)
+		AdjunctManager.add_active_adjunct(debug_adjunct)
 
 func _physics_process(delta):
 	_camera_follow(delta)

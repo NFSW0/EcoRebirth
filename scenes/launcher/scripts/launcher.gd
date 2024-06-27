@@ -117,6 +117,8 @@ func _register_resources(): # 注册资源
 		await _register_setting_resource(register_data["setting"]) # 注册外部设置
 		await _register_local_resource(register_data["local"]) # 注册外部翻译
 		await _register_effect_resource(register_data["effect"]) # 注册外部特效
+		await _register_adjunct_resource(register_data["adjunct"]) # 注册外部附益
+		await _register_adjunct_effect_resource(register_data["adjunct_effect"]) # 注册外部附益效果
 
 func _load_register_data(mod_path : String) -> Dictionary: # 获取pack.json存储的注册数据
 	var register_data = {} # 待存储解析的数据
@@ -150,8 +152,7 @@ func _register_ui_resources(_ui_resources): # 注册UI资源
 		_add_message(ui["path"])
 		if ResourceLoader.exists(ui["path"]):
 			var ui_scene = load(ui["path"])
-			var callback = Callable(load(ui["callback_script"]),ui["callback_method"])
-			UIManager.register_ui(ui["name"], ui_scene, callback)
+			UIManager.register_ui(ui["name"], ui_scene)
 			await get_tree().create_timer(interval).timeout
 
 func _register_texture_resource(_texture_resource): # 注册材质
@@ -183,6 +184,21 @@ func _register_effect_resource(_effect_resource): # 注册特效
 			var _size = Vector2(effect_data["size_x"], effect_data["size_y"])
 			EffectManager.register_effect(effect_data["name"], effect_data["path"], _position, _size)
 			await get_tree().create_timer(interval).timeout
+
+func _register_adjunct_resource(_adjunct_resource): # 注册附益
+	for adjunct in _adjunct_resource:
+		if not adjunct.has("path"):
+			continue
+		_add_message(adjunct["path"])
+		AdjunctManager.register_adjunct(adjunct["path"])
+		await get_tree().create_timer(interval).timeout
+
+func _register_adjunct_effect_resource(_adjunct_effect_resource): # 注册附益效果
+	for adjunct_effect in _adjunct_effect_resource:
+		_add_message("register_adjunct_effect:%s" % adjunct_effect["effect_tag"])
+		var callback = Callable(load(adjunct_effect["callback_script"]),adjunct_effect["callback_method"])
+		AdjunctManager.register_adjunct_effect(adjunct_effect["effect_tag"], callback)
+		await get_tree().create_timer(interval).timeout
 
 func _launcher_game(_main_scene_path: String) -> String: # 进入开始菜单(标题屏幕)
 	if not ResourceLoader.exists(_main_scene_path):

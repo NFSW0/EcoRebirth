@@ -1,15 +1,11 @@
 class_name _AdjunctManager
 extends Node
-## 附益管理器
-## 注册附益
-## 注册附益效果
-## 添加活动附益
-## 持续附益结算
-## 指定附益结算
+## 附益管理器 注册附益与效果 添加活动附益 结算活动附益
+# 优化提示1:附益效果无需独立为Resource，它是独立且开放的，调用无限制，组合后定义为一个附益
 
-var adjunct_library = {} #{tag:AdjunctData}
-var adjunct_effects = {} #{tag:Callable(self)}
-var active_adjuncts = [] #[AdjunctActive]
+var adjunct_library := {} # 附益库 {tag:AdjunctData}
+var adjunct_effects := {} # 附益效果 {tag:Callable(self,active_adjunct)}
+var active_adjuncts := [] # 活动附益 [AdjunctActive]
 
 ## 注册附益
 func register_adjunct(resource_path):
@@ -19,114 +15,105 @@ func register_adjunct(resource_path):
 	if not resource is AdjunctData:
 		return
 	var adjunct_tag:String = (resource as AdjunctData).tag
+	if adjunct_library.has(adjunct_tag):
+		return
 	adjunct_library[adjunct_tag] = resource
-
+	var message = "已注册附益: %s" % adjunct_tag # 生成日志信息
+	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 记录日志
 ## 获取附益
 func get_adjunct(adjunct_tag:String) -> AdjunctData:
+	if not adjunct_tag in adjunct_library.keys():
+		return null
 	return adjunct_library[adjunct_tag]
 
 ## 注册附益效果
-func register_adjunct_effect(effect_tag:String, call_back:Callable):
+func register_adjunct_effect(effect_tag: String, call_back: Callable):
 	adjunct_effects[effect_tag] = call_back
+	var message = "已注册附益效果: %s" % effect_tag # 生成日志信息
+	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 记录日志
+## 获取附益效果
+func get_adjunct_effect(effect_tag: String) -> Callable:
+	if not effect_tag in adjunct_effects:
+		return Callable()
+	return adjunct_effects[effect_tag]
 
 ## 添加活动附益
-func add_active_adjunct(active_adjunct:AdjunctActive):
-	active_adjuncts.append(active_adjunct)
-
+func add_active_adjunct(active_adjunct: AdjunctActive):
+	# 权限检查
+	if multiplayer.has_multiplayer_peer():
+		if not multiplayer.is_server():
+			rpc_id(1, "_add_active_adjunct_by_dictionary", active_adjunct.to_dictionary())
+			return
+	_add_active_adjunct(active_adjunct)
 ## 获取目标活动附益
-func get_target_active_adjuncts(target:Node) -> Array[AdjunctActive]:
+func get_target_active_adjuncts(target: Node) -> Array[AdjunctActive]:
 	var result:Array[AdjunctActive] = []
 	for active_adjunct:AdjunctActive in active_adjuncts:
 		if active_adjunct.adjunct_target == target:
 			result.append(active_adjunct)
 	return result
 
-## 附益生效
-func tack_effect():
-	pass
+## 活动附益生效
+func tack_effect(active_adjunct: AdjunctActive, effect_time: String):
+	var adjunct = get_adjunct(active_adjunct.adjunct_data_tag)
+	if adjunct == null:
+		return
+	if not adjunct.effects.keys().has(effect_time):
+		return
+	var eff_tags = adjunct.effects[effect_time]
+	for tag in eff_tags:
+		get_adjunct_effect(tag).call(self, active_adjunct)
 
-## Buff系统核心[自动加载]
-## 处理逻辑:
-## 无效判定:数据不存在 或 目标不存在
-## 新建判定:来源不存在 或 无叠加目标
-## 叠加判定:同数据、同目标、同来源时叠加层数和剩余持续时间，但无法超过最大值
-
-## 在Buff添加后传出新Buff的信息
-#signal new_buff_appended(buff_info:BuffInfo)
-
-## 由服务器统一存储所有Buff信息方便同步
-#var all_buffs : Array[BuffInfo] = []
-
-## 附加Buff 因为存在直接附加Buff行为，所以为客户端提供方法
-#@rpc("any_peer","call_local","reliable")
-#func append_buff(buff_data_path:String,buff_target_id:int,buff_source_id:int=0,buff_permanent:bool=false,buff_stack:int=1):
-	#if !multiplayer.is_server():
-		#print("已取消即将在客户端处理的效果添加指令")
-		#return
-	#if buff_data_path.is_empty() or buff_target_id == 0:
-		#print("已忽略无效的效果添加指令:")
-		#print("数据路径:%s" % buff_data_path)
-		#print("目标路径:%s" % buff_target_id)
-	#else:
-		#var buff_data:BuffData = load(buff_data_path)
-		#var buff_target:Node = instance_from_id(buff_target_id)
-		#if buff_data == null or buff_target == null:
-			#print("已跳过目标缺失的效果添加指令:")
-			#if buff_data == null:
-				#print("效果数据缺失:%s" % buff_data_path)
-			#if buff_target == null:
-				#print("效果目标缺失:%s" % buff_target_id)
-		#else:
-			#var buff_info:BuffInfo = BuffInfo.new(buff_data.duplicate(),buff_target,null if buff_source_id == 0 else instance_from_id(buff_source_id),buff_permanent,buff_stack,0,buff_data.buff_tick_interval,buff_data.buff_max_duration)
-			#var buff = _find_buff(buff_info)
-			#if buff != null:
-				#print("已叠加目标是 %s 的效果: %s" % [buff_info.buff_target.name, buff_info.buff_data.buff_name])
-				#buff.current_duration_remain = min(buff.current_duration_remain + buff_info.current_duration_remain, buff_info.buff_data.buff_max_duration)
-				#buff.current_stack = min(buff.current_stack + buff_info.current_stack, buff_info.buff_data.buff_max_stack)
-			#else:
-				#print("已新建目标是 %s 的效果: %s" % [buff_info.buff_target.name, buff_info.buff_data.buff_name])
-				#all_buffs.append(buff_info)
-				#_send_new_buff_info(buff_info)
-			#if buff_info.buff_data.buff_effect_on_append != null:
-				#print("已触发效果 %s 的附加事件" % buff_info.buff_data.buff_name)
-				#for buff_effect in buff_info.buff_data.buff_effect_on_append:
-					#buff_effect.apply(buff_info)
-
-## 传出新Buff信息 仅服务端
-#func _send_new_buff_info(buff_info):
-	#new_buff_appended.emit(buff_info)
-
-## 获取Buff 仅服务端
-#func _find_buff(buff_info:BuffInfo) -> BuffInfo:
-	#if buff_info.buff_source == null:
-		#return null
-	#for buff in all_buffs:
-		#if buff.buff_target == buff_info.buff_target and buff.buff_source == buff_info.buff_source and buff.buff_data.buff_id == buff_info.buff_data.buff_id:
-			#return buff
-	#return null
-
-## 结算Buff 仅服务端
-#func _physics_process(delta):
-	#if multiplayer.is_server():
-		#var index:int = all_buffs.size() - 1
-		#while index >= 0:
-			## 间歇处理
-			#if all_buffs[index].buff_data.buff_effect_on_tick != null and all_buffs[index].buff_data.buff_tick_interval > 0:
-				#if all_buffs[index].current_tick_remain <= 0:
-					#print("已触发效果 %s 的间歇事件" % all_buffs[index].buff_data.buff_name)
-					#all_buffs[index].current_tick_count += 1
-					#all_buffs[index].current_tick_remain = all_buffs[index].buff_data.buff_tick_interval
-					#for buff_effect in all_buffs[index].buff_data.buff_effect_on_tick:
-						#buff_effect.apply(all_buffs[index])
-				#else:
-					#all_buffs[index].current_tick_remain -= delta
-			## 消除处理
-			#if not all_buffs[index].buff_permanent:
-				#all_buffs[index].current_duration_remain -= delta
-			#if all_buffs[index].buff_target == null or all_buffs[index].current_duration_remain <= 0 or all_buffs[index].current_stack <= 0:
-				#if all_buffs[index].buff_data.buff_effect_on_erase != null:
-					#print("已触发效果 %s 的消除事件" % all_buffs[index].buff_data.buff_name)
-					#for buff_effect in all_buffs[index].buff_data.buff_effect_on_erase:
-						#buff_effect.apply(all_buffs[index])
-				#all_buffs.remove_at(index)
-			#index -= 1
+## 附益结算
+func _physics_process(delta):
+	if multiplayer.has_multiplayer_peer():
+		if not multiplayer.is_server():
+			return
+	var index = active_adjuncts.size() -1
+	while index >= 0:
+		var active_adjunct:AdjunctActive = active_adjuncts[index]
+		active_adjunct.tick_remain -= delta
+		active_adjunct.duration_remain -=delta
+		if not active_adjunct.permanency and active_adjunct.duration_remain <= 0:
+			if active_adjunct.stack > 1:
+				tack_effect(active_adjunct, "dilation")
+			else:
+				tack_effect(active_adjunct, "end")
+				active_adjuncts.remove_at(index)
+		else:
+			tack_effect(active_adjunct, "tick")
+		index -= 1
+## 重复附益检查 用于附益叠加判定
+func _adjunct_duplication(active_adjunct: AdjunctActive) -> AdjunctActive:
+	for active:AdjunctActive in active_adjuncts:
+		if active.adjunct_data_tag == active_adjunct.adjunct_data_tag and active.adjunct_target == active_adjunct.adjunct_target and active.adjunct_source == active_adjunct.adjunct_source:
+			return active
+	return null
+## 添加活动附益 用于多人添加附益
+@rpc("any_peer")
+func _add_active_adjunct_by_dictionary(active_adjunct_dictionary:Dictionary):
+	var active_adjunct = AdjunctActive.new()
+	active_adjunct.from_dictionary(self, active_adjunct_dictionary)
+	_add_active_adjunct(active_adjunct)
+## 添加活动附益 用于多人添加附益
+func _add_active_adjunct(active_adjunct: AdjunctActive):
+	# 权限检查
+	if multiplayer.has_multiplayer_peer():
+		if not multiplayer.is_server():
+			return
+	# 有效判定
+	if not active_adjunct.adjunct_data_tag in adjunct_library.keys():
+		return
+	# 累加或新增
+	var current_active_adjunct:AdjunctActive
+	var duplicate_adjunct:AdjunctActive = _adjunct_duplication(active_adjunct)
+	if duplicate_adjunct != null:
+		current_active_adjunct = duplicate_adjunct
+		current_active_adjunct.accumulate(active_adjunct)
+		tack_effect(active_adjunct, "stacking") # 触发叠层回调
+	else:
+		current_active_adjunct = active_adjunct
+		active_adjuncts.append(active_adjunct)
+		tack_effect(active_adjunct, "begin") # 触发新增回调
+	# 数据修正
+	current_active_adjunct._check_and_correct(get_adjunct(active_adjunct.adjunct_data_tag))

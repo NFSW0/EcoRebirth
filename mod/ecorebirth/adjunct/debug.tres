@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AdjunctData" load_steps=2 format=3 uid="uid://dngxt6frffbl3"]
+
+[ext_resource type="Script" path="res://adjunct/scripts/adjunct_data.gd" id="1_vtwi0"]
+
+[resource]
+script = ExtResource("1_vtwi0")
+name = "debug"
+tag = "eco_rebirth:debug"
+effects = {
+"begin": ["eco_rebirth:debug_begin"],
+"dilation": ["eco_rebirth:debug_end"],
+"end": ["eco_rebirth:debug_end"],
+"post-attack": ["eco_rebirth:debug_end"],
+"post-harm": ["eco_rebirth:debug_end"],
+"post-harmed": ["eco_rebirth:debug_end"],
+"post-hit": ["eco_rebirth:debug_end"],
+"post-hited": ["eco_rebirth:debug_end"],
+"pre-attack": ["eco_rebirth:debug_end"],
+"pre-harm": ["eco_rebirth:debug_end"],
+"pre-harmed": ["eco_rebirth:debug_end"],
+"stacking": ["eco_rebirth:debug_stacking"],
+"tick": ["eco_rebirth:debug_tick"]
+}
+max_stack = 10
+max_duration = 10.0
+data = {}
