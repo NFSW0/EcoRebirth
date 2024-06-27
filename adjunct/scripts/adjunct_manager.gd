@@ -72,6 +72,10 @@ func _physics_process(delta):
 	var index = active_adjuncts.size() -1
 	while index >= 0:
 		var active_adjunct:AdjunctActive = active_adjuncts[index]
+		# 有效性检查
+		if active_adjunct.adjunct_target == null:
+			active_adjuncts.remove_at(index)
+			continue
 		active_adjunct.tick_remain -= delta
 		active_adjunct.duration_remain -=delta
 		if not active_adjunct.permanency and active_adjunct.duration_remain <= 0:
