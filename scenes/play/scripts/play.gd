@@ -58,13 +58,13 @@ func _camera_follow(delta):
 # 更新:动态加载区块
 func _load_chunks_around_the_player(_delta):
 	# 检查
-	if player == null or world2 == null:
+	if camera == null or world2 == null:
 		return
 	# 获取玩家区块坐标
-	var player_chunk_pos = world2.get_chunk_pos_from_map_pos(world2.get_map_pos_from_global_pos(player.global_position))
+	var camera_chunk_pos = world2.get_chunk_pos_from_map_pos(world2.get_map_pos_from_global_pos(camera.global_position))
 	# 获取需要加载的区块组
-	if player_chunk_pos == loaded_chunk_center: return
-	loaded_chunk_center = player_chunk_pos
+	if camera_chunk_pos == loaded_chunk_center: return
+	loaded_chunk_center = camera_chunk_pos
 	var new_chunk_array = _get_chunks_by_chunk_center(loaded_chunk_center)
 	# 获取已加载的区块组
 	var old_chunk_array = world2.get_the_loaded_chunks_array()
