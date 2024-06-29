@@ -5,8 +5,11 @@ extends CharacterBody2D
 var entity_data := {}
 func set_entity_data(_entity_data: Dictionary):
 	entity_data = _entity_data
-func get_entity_data():
+func get_entity_data() -> Dictionary:
 	return entity_data
+
+func _init(_entity_data = {}):
+	entity_data = _entity_data
 
 func _ready():
 	_multi_ready()
