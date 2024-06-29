@@ -8,6 +8,7 @@ func set_entity_data(_entity_data: Dictionary):
 func get_entity_data() -> Dictionary:
 	return entity_data
 
+# 这里的初始化为自定义实体服务(未投入使用)，保存的场景无法使用
 func _init(_entity_data = {}):
 	entity_data = _entity_data
 
