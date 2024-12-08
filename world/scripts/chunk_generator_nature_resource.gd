@@ -17,10 +17,13 @@ func generate_chunk(world_data: Dictionary, chunk_pos: Vector2i) -> Chunk:
 	# 获取区块内图格数据组 [MapGrid]
 	var grid_data_array = grid_pos_array.map(func(number):return map_grids.get(number, MapGrid.new(number)))
 	# 获取对应瓦片数据组 [{{"source_id": 1, "atlas_coords": Vector2i(1, 0)}},{...}]
-	#var cell_data_array = StructureManager.get_environment_array(world_data["seed"], grid_pos_array)
+	var cell_data_array = NatureResouceManager.get_environment_array(world_data["seed"], grid_pos_array)
 	# 更新区块内图格数据
 	for index in grid_pos_array.size():
-		# TODO 墙体合理性检查
-		grid_data_array[index].update_grid_data("wall_layer", {"source_id": 1, "atlas_coords": Vector2i(1, 0)})
-		map_grids[grid_pos_array[index]] = grid_data_array[index]
+		var cell_data = cell_data_array[index]
+		if (cell_data as Dictionary).is_empty():
+			continue
+		var grid_data:MapGrid = grid_data_array[index]
+		grid_data.update_grid_data("wall_layer", cell_data)
+		map_grids[grid_pos_array[index]] = grid_data
 	return chunk
