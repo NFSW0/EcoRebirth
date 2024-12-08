@@ -1,2 +1,23 @@
 # Godot 4+ specific ignores
 .godot/
+
+# .DS_Store 文件
+.DS_Store
+
+# .AppleDouble 文件
+.AppleDouble
+
+# Icon^M 文件
+Icon
+
+# 文件夹和文件的资源分配（存储 Finder 配置）
+._*
+
+# Spotlight搜索的相关文件
+.Spotlight-V100
+
+# 临时的文件和缓存
+.Trashes
+
+# 缓存文件夹
+*.swp
