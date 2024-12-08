@@ -5,8 +5,12 @@ extends CharacterBody2D
 var entity_data := {}
 func set_entity_data(_entity_data: Dictionary):
 	entity_data = _entity_data
-func get_entity_data() -> Dictionary:
-	return entity_data
+func get_entity_data(key = "", normal = null):
+	if key.is_empty():
+		return entity_data
+	if not entity_data.has(key):
+		return normal
+	return entity_data[key]
 
 # 这里的初始化为自定义实体服务(未投入使用)，保存的场景无法使用
 func _init(_entity_data = {}):
