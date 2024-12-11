@@ -3,12 +3,20 @@ extends Node2D
 var world_data = { "chunk_size":16, "seed":123 } # 世界数据 从存档数据获取
 var chunk_generator : ChunkGenerator # 区块生成器
 var loaded_chunks := {} # 已加载区块 用字典存放区块相关数据
-@onready var tile_map :TileMap = $TileMap # 瓦片地图
+#@onready var tile_map :TileMap = $TileMap # 瓦片地图
+@onready var tile_map_layers = [$preview_layer, $wall_layer, $ground_layer] # 瓦片地图
 
 func _ready():
 	# TODO 获取世界数据
 	# 初始化区块生成器
 	chunk_generator = ChunkGenerator_NatureResource.new(ChunkGenerator_Environment.new(ChunkGenerator.new()))
+
+
+# 放置预览(瓦片) 用户开启放置功能后(需要传递用户想要放置的瓦片) 捕捉并拦截非UI上的鼠标左键点击
+# 放置瓦片(层，坐标) 确认位置后将预览的瓦片完成放置 -> ok:
+
+# 移除预览 用户开启移除功能后连续识别鼠标位置上的瓦片 捕捉并拦截非UI上的鼠标左键点击
+# 移除瓦片(坐标) -> ok:
 
 # 获取区块
 func get_chunk(chunk_pos: Vector2i) -> Chunk:
@@ -23,7 +31,7 @@ func get_chunk(chunk_pos: Vector2i) -> Chunk:
 func get_the_loaded_chunks_array() -> Array:
 	return loaded_chunks.keys()
 
-# 加载区块
+# 加载目标区块
 func load_chunk(chunk_pos: Vector2i):
 	if loaded_chunks.has(chunk_pos):
 		return
@@ -33,13 +41,22 @@ func load_chunk(chunk_pos: Vector2i):
 	# 加载瓦片
 	_traverse_chunk(chunk_pos,func(map_pos:Vector2i):
 		var map_grid: MapGrid = map_grids.get(map_pos, MapGrid.new(map_pos))
-		_traverse_layer(func(layer_id):
+		#_traverse_layer(func(layer_id):
+			#var map_grid_data = map_grid.get_grid_data()
+			#var layer_name: String = tile_map.get_layer_name(layer_id)
+			#var layer_data: Dictionary = map_grid_data.get(layer_name, {})
+			#var source_id: int = layer_data.get("source_id", -1)
+			#var atlas_coords: Vector2i = layer_data.get("atlas_coords", Vector2i(-1, -1))
+			#tile_map.set_cell(layer_id, map_pos, source_id, atlas_coords)
+			#)
+		_traverse_layer(func(index):
 			var map_grid_data = map_grid.get_grid_data()
-			var layer_name: String = tile_map.get_layer_name(layer_id)
+			var tile_map_layer:TileMapLayer = tile_map_layers[index]
+			var layer_name: String = tile_map_layer.name
 			var layer_data: Dictionary = map_grid_data.get(layer_name, {})
 			var source_id: int = layer_data.get("source_id", -1)
 			var atlas_coords: Vector2i = layer_data.get("atlas_coords", Vector2i(-1, -1))
-			tile_map.set_cell(layer_id, map_pos, source_id, atlas_coords)
+			tile_map_layer.set_cell(map_pos, source_id, atlas_coords)
 			)
 		)
 	# TODO 加载生物
@@ -47,14 +64,17 @@ func load_chunk(chunk_pos: Vector2i):
 	# 附属更新
 	loaded_chunks[chunk_pos] = chunk
 
-# 卸载区块
+# 卸载目标区块
 func unload_chunk(chunk_pos: Vector2i):
 	if not loaded_chunks.has(chunk_pos):
 		return
 	# 卸载瓦片
 	_traverse_chunk(chunk_pos,func(map_pos:Vector2i):
-		_traverse_layer(func(layer_id):
-			tile_map.set_cell(layer_id,map_pos)))
+		#_traverse_layer(func(layer_id):
+			#tile_map.set_cell(layer_id,map_pos)))
+		_traverse_layer(func(index):
+			var tile_map_layer:TileMapLayer = tile_map_layers[index]
+			tile_map_layer.set_cell(map_pos)))
 	# TODO 卸载生物
 	
 	# 保存数据
@@ -68,7 +88,8 @@ func unload_chunk(chunk_pos: Vector2i):
 
 # 世界坐标转地图坐标
 func get_map_pos_from_global_pos(global_pos: Vector2):
-	return tile_map.local_to_map(global_pos)
+	#return tile_map.local_to_map(global_pos)
+	return tile_map_layers[0].local_to_map(global_pos)
 
 # 地图坐标转区块坐标
 func get_chunk_pos_from_map_pos(map_pos: Vector2):
@@ -96,6 +117,8 @@ func _traverse_chunk(chunk_pos: Vector2i, call_back:Callable):
 			call_back.call(Vector2i(world_x, world_y))
 # 遍历图层
 func _traverse_layer(call_back:Callable):
-	for layer_id: int in tile_map.get_layers_count():
-		call_back.call(layer_id)
+	#for layer_id: int in tile_map.get_layers_count():
+		#call_back.call(layer_id)
+	for index in tile_map_layers.size():
+		call_back.call(index)
 #endregion
