@@ -36,6 +36,7 @@ NatureResouceManager="*res://world/scripts/nature_resouce_manager.gd"
 StructureManager="*res://world/scripts/structure_manager.gd"
 CreatureManager="*res://world/scripts/creature_manager.gd"
 AdjunctManager="*res://adjunct/scripts/adjunct_manager.gd"
+EcoEntityFactory="*res://entity/scripts/eco_entity_factory.gd"
 
 [display]
 

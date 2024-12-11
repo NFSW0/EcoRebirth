@@ -51,4 +51,7 @@
 {"effect_tag":"eco_rebirth:debug_end", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"debug_end"},
 {"effect_tag":"eco_rebirth:debug_stacking", "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"debug_stacking"},
 ],
+"entity": [
+{"entity_name":"Slim","resource_path":"res://mod/ecorebirth/enemy/slim.tscn", "max_speed":100},
+],
 }

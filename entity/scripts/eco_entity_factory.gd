@@ -4,5 +4,11 @@ extends Node
 
 var entity_library := {}
 
-func new_entity(_entity_name) -> Node:
-	return EcoEntityState.new(EcoEntity.new({}))
+func register_entity(entity_name:String, data:Dictionary):
+	entity_library[entity_name] = data
+	var message = "已注册实体: %s" % entity_name # 生成日志信息
+	LogAccess.new().log_message(LogAccess.LogLevel.INFO, type_string(typeof(self)), message) # 记录日志
+
+
+func new_entity(entity_name):
+	return entity_library[entity_name]

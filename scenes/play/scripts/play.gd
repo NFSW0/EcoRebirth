@@ -13,6 +13,10 @@ func get_player() -> Node:
 #endregion
 var loaded_chunk_center # 用于检查是否需要更新地图加载
 var camera_offset = Vector2(0, 0) # 相机跟随偏移
+var entity_limit = 100
+var current_entity_count = 0
+var generate_interval = 0.2
+var timer:Timer = Timer.new()
 @onready var camera = $Camera2D # 摄像机
 @onready var world2 = $World2 # 世界节点
 @onready var multi_entity = $MultiEntity # 实体载体
@@ -28,6 +32,9 @@ func _ready():
 	var using_player_data = DataManager.get_data("using_player_data",{"body":"Body1", "face":"Face1"}) # 获取选择的角色数据
 	using_player_data["resource_path"] = "res://character/scenes/character_model.tscn" # 补充预制体路径
 	EcoMultiSpawner.generate_entity(using_player_data) # 多人玩家实体
+	add_child(timer)
+	timer.start(generate_interval)
+	timer.timeout.connect(_generate_enemy)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"): # ESC 打开灰幕与游戏菜单
@@ -78,6 +85,16 @@ func _load_chunks_around_the_player(_delta):
 	for chunk_pos in chunks_to_unload:
 		world2.unload_chunk(chunk_pos)
 
-# 获取需要加载区块组 TODO 调整以适配屏幕
-func _get_chunks_by_chunk_center(chunk_pos):
-	return [chunk_pos, chunk_pos + Vector2i(-1, 0), chunk_pos + Vector2i(1, 0), chunk_pos + Vector2i(0, -1), chunk_pos + Vector2i(0, 1)]
+# 获取需要加载区块组 TODO 调整以适配屏幕 调整屏幕大小会看见远景 动态加载考虑加入相机视野参数
+func _get_chunks_by_chunk_center(chunk_pos, radius=1):
+	var chunks = []
+	for x in range(-radius, radius + 1):
+		for y in range(-radius, radius + 1):
+			chunks.append(chunk_pos + Vector2i(x, y))
+	return chunks
+
+# 生成敌人
+func _generate_enemy():
+	if current_entity_count< entity_limit:
+		EcoMultiSpawner.generate_entity(EcoEntityFactory.new_entity("Slim"))
+	current_entity_count += 1

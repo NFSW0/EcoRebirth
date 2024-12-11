@@ -119,6 +119,7 @@ func _register_resources(): # 注册资源
 		await _register_effect_resource(register_data["effect"]) # 注册外部特效
 		await _register_adjunct_resource(register_data["adjunct"]) # 注册外部附益
 		await _register_adjunct_effect_resource(register_data["adjunct_effect"]) # 注册外部附益效果
+		await _register_entity_resource(register_data["entity"]) # 注册外部实体
 
 func _load_register_data(mod_path : String) -> Dictionary: # 获取pack.json存储的注册数据
 	var register_data = {} # 待存储解析的数据
@@ -198,6 +199,12 @@ func _register_adjunct_effect_resource(_adjunct_effect_resource): # 注册附益
 		_add_message("register_adjunct_effect:%s" % adjunct_effect["effect_tag"])
 		var callback = Callable(load(adjunct_effect["callback_script"]),adjunct_effect["callback_method"])
 		AdjunctManager.register_adjunct_effect(adjunct_effect["effect_tag"], callback)
+		await get_tree().create_timer(interval).timeout
+
+func _register_entity_resource(_entity_resource): # 注册实体
+	for entity in _entity_resource:
+		_add_message("register_entity:%s" % entity["entity_name"])
+		EcoEntityFactory.register_entity(entity["entity_name"], entity)
 		await get_tree().create_timer(interval).timeout
 
 func _launcher_game(_main_scene_path: String) -> String: # 进入开始菜单(标题屏幕)
