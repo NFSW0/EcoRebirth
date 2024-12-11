@@ -3,7 +3,10 @@ extends Node2D
 var world_data = { "chunk_size":16, "seed":123 } # 世界数据 从存档数据获取
 var chunk_generator : ChunkGenerator # 区块生成器
 var loaded_chunks := {} # 已加载区块 用字典存放区块相关数据
-#@onready var tile_map :TileMap = $TileMap # 瓦片地图
+var under_construction = false # 是否处于建造模式
+var preview_source_id = -1 # 预览瓦片源id
+var preview_atlas_coords = Vector2() # 预览瓦片编号
+var preview_map_pos = Vector2i() # 预览网格点
 @onready var tile_map_layers = [$preview_layer, $wall_layer, $ground_layer] # 瓦片地图
 
 func _ready():
@@ -11,12 +14,29 @@ func _ready():
 	# 初始化区块生成器
 	chunk_generator = ChunkGenerator_NatureResource.new(ChunkGenerator_Environment.new(ChunkGenerator.new()))
 
+func _process(_delta):
+	if under_construction:
+		_update_preview_layer()
 
-# 放置预览(瓦片) 用户开启放置功能后(需要传递用户想要放置的瓦片) 捕捉并拦截非UI上的鼠标左键点击
-# 放置瓦片(层，坐标) 确认位置后将预览的瓦片完成放置 -> ok:
+# 进入建造模式(瓦片数据)
+func enter_build_mode(source_id = -1, atlas_coords = Vector2i()):
+	preview_source_id = source_id
+	preview_atlas_coords = atlas_coords
+	under_construction = true
 
-# 移除预览 用户开启移除功能后连续识别鼠标位置上的瓦片 捕捉并拦截非UI上的鼠标左键点击
-# 移除瓦片(坐标) -> ok:
+# 退出建造模式
+func exit_build_mode():
+	under_construction = false
+
+# 放置瓦片 默认放置预览的瓦片
+func place_tile(layer_index: int = 1, map_pos: Vector2i = get_map_pos_from_global_pos(get_global_mouse_position()), source_id: int = preview_source_id, atlas_coords:Vector2i = preview_atlas_coords):
+	if layer_index < tile_map_layers.size():
+		tile_map_layers[layer_index].set_cell(map_pos, source_id, atlas_coords)
+
+# 移除瓦片
+func remove_tile(layer_index: int = 1, map_pos: Vector2i = get_map_pos_from_global_pos(get_global_mouse_position())):
+	if layer_index < tile_map_layers.size():
+		tile_map_layers[layer_index].set_cell(map_pos, -1)
 
 # 获取区块
 func get_chunk(chunk_pos: Vector2i) -> Chunk:
@@ -41,14 +61,6 @@ func load_chunk(chunk_pos: Vector2i):
 	# 加载瓦片
 	_traverse_chunk(chunk_pos,func(map_pos:Vector2i):
 		var map_grid: MapGrid = map_grids.get(map_pos, MapGrid.new(map_pos))
-		#_traverse_layer(func(layer_id):
-			#var map_grid_data = map_grid.get_grid_data()
-			#var layer_name: String = tile_map.get_layer_name(layer_id)
-			#var layer_data: Dictionary = map_grid_data.get(layer_name, {})
-			#var source_id: int = layer_data.get("source_id", -1)
-			#var atlas_coords: Vector2i = layer_data.get("atlas_coords", Vector2i(-1, -1))
-			#tile_map.set_cell(layer_id, map_pos, source_id, atlas_coords)
-			#)
 		_traverse_layer(func(index):
 			var map_grid_data = map_grid.get_grid_data()
 			var tile_map_layer:TileMapLayer = tile_map_layers[index]
@@ -70,8 +82,6 @@ func unload_chunk(chunk_pos: Vector2i):
 		return
 	# 卸载瓦片
 	_traverse_chunk(chunk_pos,func(map_pos:Vector2i):
-		#_traverse_layer(func(layer_id):
-			#tile_map.set_cell(layer_id,map_pos)))
 		_traverse_layer(func(index):
 			var tile_map_layer:TileMapLayer = tile_map_layers[index]
 			tile_map_layer.set_cell(map_pos)))
@@ -87,12 +97,11 @@ func unload_chunk(chunk_pos: Vector2i):
 	loaded_chunks.erase(chunk_pos)
 
 # 世界坐标转地图坐标
-func get_map_pos_from_global_pos(global_pos: Vector2):
-	#return tile_map.local_to_map(global_pos)
+func get_map_pos_from_global_pos(global_pos: Vector2) -> Vector2i:
 	return tile_map_layers[0].local_to_map(global_pos)
 
 # 地图坐标转区块坐标
-func get_chunk_pos_from_map_pos(map_pos: Vector2):
+func get_chunk_pos_from_map_pos(map_pos: Vector2) -> Vector2i:
 	return Vector2i(floor(map_pos.x / world_data["chunk_size"]), floor(map_pos.y / world_data["chunk_size"]))
 
 #region 私有方法
@@ -117,8 +126,36 @@ func _traverse_chunk(chunk_pos: Vector2i, call_back:Callable):
 			call_back.call(Vector2i(world_x, world_y))
 # 遍历图层
 func _traverse_layer(call_back:Callable):
-	#for layer_id: int in tile_map.get_layers_count():
-		#call_back.call(layer_id)
 	for index in tile_map_layers.size():
 		call_back.call(index)
+# 更新预览层
+func _update_preview_layer():
+	var mouse_pos = get_global_mouse_position()
+	var map_pos = get_map_pos_from_global_pos(mouse_pos)
+	
+	if map_pos == preview_map_pos:
+		return
+	
+	preview_map_pos = map_pos
+	
+	if preview_source_id != -1:
+		modulate = Color(255, 99, 71, 0.5)
+		
+		var target_source_id = tile_map_layers[1].get_cell_source_id(map_pos)
+		var target_atlas_coords = tile_map_layers[1].get_cell_atlas_coords(map_pos)
+		tile_map_layers[0].set_cell(map_pos, target_source_id, target_atlas_coords)
+	else:
+		if _can_place(map_pos):
+			modulate = Color(70, 130, 180, 0.5)
+		else:
+			modulate = Color(255, 99, 71, 0.5)
+		
+		tile_map_layers[0].clear()
+		tile_map_layers[0].set_cell(map_pos, preview_source_id, preview_atlas_coords)
+# 是否可以放置(阻止重叠)
+func _can_place(positionList:Array[Vector2i]) -> bool:
+	for map_pos in positionList:
+		if tile_map_layers[1].get_cell_source_id(map_pos) != -1:
+			return false
+	return true
 #endregion

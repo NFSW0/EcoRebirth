@@ -40,11 +40,17 @@ func _ready():
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_cancel"): # ESC 打开灰幕与游戏菜单
+		if world2.under_construction:
+			world2.exit_build_mode()
+			return
 		UIManager.get_ui("GreyScreen", self) # ESC 打开灰幕与游戏菜单
 	if event.is_action_pressed("ui_accept"): # Space 特效功能测试
 		EffectManager.play_effect("ExampleEffect", Vector2i(100,50)) # Space 特效功能测试
 	if event.is_action_pressed("primary_interact"):
-		pass
+		if world2.under_construction:
+			# TODO 确认建造
+			world2.place_tile(1,)
+			return
 	if event.is_action_pressed("secondary_interact"):
 		var debug_adjunct = AdjunctActive.new("eco_rebirth:debug",player,null,false,1,0,0,5)
 		AdjunctManager.add_active_adjunct(debug_adjunct)
