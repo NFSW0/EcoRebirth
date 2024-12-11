@@ -52,6 +52,8 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [node name="Slim" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_v82g8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

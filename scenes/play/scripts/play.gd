@@ -13,10 +13,12 @@ func get_player() -> Node:
 #endregion
 var loaded_chunk_center # 用于检查是否需要更新地图加载
 var camera_offset = Vector2(0, 0) # 相机跟随偏移
-var entity_limit = 100
-var current_entity_count = 0
-var generate_interval = 0.2
-var timer:Timer = Timer.new()
+var entity_limit = 100 # 实体数量限制(软限制)
+var current_entity_count = 0 # 当前实体数量
+var generate_interval = 0.2 # 敌人生成间隔
+var timer:Timer = Timer.new() # 敌人生成计时器
+var no_enemy_range = 400 # 不可生成敌人的半径
+var to_enemy_range = 400 # 可以生成敌人的半径(基于不可生成半径的额外范围)
 @onready var camera = $Camera2D # 摄像机
 @onready var world2 = $World2 # 世界节点
 @onready var multi_entity = $MultiEntity # 实体载体
@@ -94,7 +96,13 @@ func _get_chunks_by_chunk_center(chunk_pos, radius=1):
 	return chunks
 
 # 生成敌人
-func _generate_enemy():
-	if current_entity_count< entity_limit:
-		EcoMultiSpawner.generate_entity(EcoEntityFactory.new_entity("Slim"))
-	current_entity_count += 1
+func _generate_enemy(_center_position: Vector2 = player.position, _no_enemy_range: float = no_enemy_range, _to_enemy_range: float = to_enemy_range):
+	if current_entity_count < entity_limit and player:
+		var enemy_data: Dictionary = EcoEntityFactory.new_entity("Slim")
+		# 计算生成敌人的位置
+		var random_angle = randf() * TAU  # 随机角度，TAU 是 2 * PI
+		var random_distance = randf_range(_no_enemy_range, _no_enemy_range + _to_enemy_range)
+		var random_position: Vector2 = _center_position + Vector2(cos(random_angle), sin(random_angle)) * random_distance
+		enemy_data = enemy_data.merged({"position": random_position}, true)
+		EcoMultiSpawner.generate_entity(enemy_data)
+		current_entity_count += 1

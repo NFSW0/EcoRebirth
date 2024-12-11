@@ -12,7 +12,7 @@ func get_entity_data(key = "", normal = null):
 		return normal
 	return entity_data[key]
 
-# 这里的初始化为自定义实体服务(未投入使用)，保存的场景无法使用
+# 这里的初始化为自定义实体服务(未投入使用)，场景预制体无法使用
 func _init(_entity_data = {}):
 	entity_data = _entity_data
 
@@ -35,4 +35,8 @@ func _send_entity_data():
 @rpc("any_peer", "reliable")
 func _init_entity_data(_entity_data):
 	entity_data = _entity_data
+	if _entity_data is Dictionary:
+		for key in _entity_data.keys():
+			if typeof(get(key)) == typeof(_entity_data[key]):
+				set(key, _entity_data[key])
 #endregion 多人初始化

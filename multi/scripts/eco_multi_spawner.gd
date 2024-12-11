@@ -84,4 +84,5 @@ func _generate_entity(data) -> Node:
 	
 	# 设置多人控制权限
 	(node_instance as Node).set_multiplayer_authority(data["sender_id"])
+	
 	return node_instance
