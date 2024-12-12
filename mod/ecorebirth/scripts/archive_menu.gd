@@ -30,17 +30,17 @@ func _close(): # 关闭此面板 主要用于切换面板时剔除原面板
 func _refresh(): # 刷新显示
 	for child in archive_box.get_children(): # 遍历所有选项
 		child.queue_free() # 清理选项
-	var archive_array:Dictionary = DataManager.get_data(archives_data_name,{}) # 获取存档列表
-	_add_archive_option(archive_array) # 添加存档选项(点击事件：使用存档)
+	var archive_dic:Dictionary = DataManager.get_data(archives_data_name,{}) # 获取存档列表
+	_add_archive_option(archive_dic) # 添加存档选项(点击事件：使用存档)
 	_add_new_archive_option() # 添加新建选项(点击事件：进入新建界面)
 
-func _add_archive_option(archive_array:Dictionary): # 添加存档选项
-	for archive in archive_array.keys(): # 遍历存档集合
+func _add_archive_option(archive_dic:Dictionary): # 添加存档选项
+	for archive in archive_dic.keys(): # 遍历存档键集合(存档名称)
 		var button = Button.new() # 新建选项
 		button.text = archive # 修改按钮文字
 		button.connect("pressed", func(): # 设置按钮点击事件
 			AudioManager.play_audio("Interaction") # 点击音效
-			var archive_data = archive_array[archive] # 读取存档数据
+			var archive_data = archive_dic[archive] # 读取存档数据
 			if DataManager.has_registered("using_archive_data"): # 设置为使用中的存档
 				DataManager.set_data("using_archive_data",archive_data) # 更新数据
 			else: # 如果没注册

@@ -9,11 +9,14 @@ var preview_atlas_coords = Vector2() # 预览瓦片编号
 var preview_map_pos = Vector2i() # 预览网格点
 @onready var tile_map_layers = [$preview_layer, $wall_layer, $ground_layer] # 瓦片地图
 
+# 初始化
 func _ready():
-	# TODO 获取世界数据
+	# 获取世界信息
+	world_data = DataManager.get_data("using_archive_data")
 	# 初始化区块生成器
 	chunk_generator = ChunkGenerator_NatureResource.new(ChunkGenerator_Environment.new(ChunkGenerator.new()))
 
+# 预览
 func _process(_delta):
 	if under_construction:
 		var mouse_pos = get_global_mouse_position()
@@ -39,12 +42,10 @@ func place_tile(layer_index: int = 1, map_pos: Vector2i = get_map_pos_from_globa
 	if layer_index < tile_map_layers.size():
 		tile_map_layers[layer_index].set_cell(map_pos, source_id, atlas_coords)
 		_update_preview_layer(map_pos)
-
-# 移除瓦片
-func remove_tile(layer_index: int = 1, map_pos: Vector2i = get_map_pos_from_global_pos(get_global_mouse_position())):
-	if layer_index < tile_map_layers.size():
-		tile_map_layers[layer_index].set_cell(map_pos, -1)
-		_update_preview_layer(map_pos)
+		## 数据更新
+		var chunk_pos:Vector2i = get_chunk_pos_from_map_pos(map_pos)
+		var target_chunk:Chunk = get_chunk(chunk_pos)
+		target_chunk.chunk_data["map_grids"][map_pos]["grid_data"]["wall_layer"] = {"source_id":source_id,"atlas_coords":atlas_coords}
 
 # 获取区块
 func get_chunk(chunk_pos: Vector2i) -> Chunk:
@@ -65,7 +66,7 @@ func load_chunk(chunk_pos: Vector2i):
 		return
 	var chunk: Chunk = _read_chunk(chunk_pos)
 	var chunk_data: Dictionary = chunk.get_chunk_data()
-	var map_grids:Dictionary = chunk_data.get("map_grids", [])
+	var map_grids:Dictionary = chunk_data.get("map_grids", {})
 	# 加载瓦片
 	_traverse_chunk(chunk_pos,func(map_pos:Vector2i):
 		var map_grid: MapGrid = map_grids.get(map_pos, MapGrid.new(map_pos))
@@ -75,11 +76,12 @@ func load_chunk(chunk_pos: Vector2i):
 			var layer_name: String = tile_map_layer.name
 			var layer_data: Dictionary = map_grid_data.get(layer_name, {})
 			var source_id: int = layer_data.get("source_id", -1)
-			var atlas_coords: Vector2i = layer_data.get("atlas_coords", Vector2i(-1, -1))
+			var layer_atlas_coords = layer_data.get("atlas_coords", Vector2i(-1, -1))
+			var atlas_coords: Vector2i = layer_atlas_coords if layer_atlas_coords is Vector2i else DataTool.parse_vector2i(layer_atlas_coords)
 			tile_map_layer.set_cell(map_pos, source_id, atlas_coords)
 			)
 		)
-	# TODO 加载生物
+	# TODO 加载生物 依赖实体生成系统
 	
 	# 附属更新
 	loaded_chunks[chunk_pos] = chunk
@@ -93,7 +95,7 @@ func unload_chunk(chunk_pos: Vector2i):
 		_traverse_layer(func(index):
 			var tile_map_layer:TileMapLayer = tile_map_layers[index]
 			tile_map_layer.set_cell(map_pos)))
-	# TODO 卸载生物
+	# TODO 卸载生物 依赖实体生成系统
 	
 	# 保存数据
 	var chunk:Chunk = loaded_chunks[chunk_pos]
@@ -116,12 +118,20 @@ func get_chunk_pos_from_map_pos(map_pos: Vector2) -> Vector2i:
 # 读取区块
 func _read_chunk(chunk_pos: Vector2i) -> Chunk:
 	var chunk:Chunk = Chunk.new(chunk_pos)
-	# TODO 添加区块持久化数据读取逻辑
-	chunk = chunk_generator.generate_chunk(world_data, chunk_pos)
+	var data_name = "%s_%s" % [world_data["name"], chunk.chunk_pos]
+	var saved_chunk = DataManager.get_data(data_name)
+	if saved_chunk && saved_chunk["chunk_data"].get("map_grids"):
+		chunk = Chunk.new_from_data(saved_chunk)
+	else:
+		chunk = chunk_generator.generate_chunk(world_data, chunk_pos)
 	return chunk
 # 保存区块
-func _save_chunk(_chunk: Chunk) -> bool:
-	# TODO 添加区块持久化数据保存逻辑
+func _save_chunk(chunk: Chunk) -> bool:
+	var data_name = "%s_%s" % [world_data["name"], chunk.chunk_pos]
+	if DataManager.has_registered(data_name):
+		DataManager.set_data(data_name, chunk.to_data())
+	else:
+		DataManager.register_data(data_name, chunk.to_data())
 	return true
 # 遍历区块
 func _traverse_chunk(chunk_pos: Vector2i, call_back:Callable):

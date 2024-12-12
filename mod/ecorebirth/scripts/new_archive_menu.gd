@@ -111,11 +111,11 @@ func _on_create_pressed():
 	archive_data.archive_cycle_time = ArchiveData.ArchiveCircleTime.DEFAULT # 存档周期
 	archive_data.archive_difficulty = ArchiveData.ArchiveDifficulty.DEFAULT # 存档难度
 	if DataManager.has_registered(archives_data_name): # 如果数据已有存档列表
-		var archive_array:Dictionary = DataManager.get_data(archives_data_name) # 获取存档列表
-		archive_array[archive_name_ui.text] = archive_data # 添加新存档数据
-		DataManager.set_data(archives_data_name, archive_array) # 覆盖旧存档列表
+		var archive_dic:Dictionary = DataManager.get_data(archives_data_name) # 获取存档列表
+		archive_dic[archive_name_ui.text] = archive_data.to_dictionary() # 添加新存档数据
+		DataManager.set_data(archives_data_name, archive_dic) # 更新存档列表
 	else: # 如果没有存档列表
-		DataManager.register_data(archives_data_name, {archive_name_ui.text:archive_data}) # 新注册存档列表
+		DataManager.register_data(archives_data_name, {archive_name_ui.text:archive_data}) # 新注册存档列表{存档名:存档数据}
 	UIManager.get_ui("ArchiveMenu", self) # 加载存档面板
 	AudioManager.play_audio("Interaction") # 点击音效
 	_close() # 关闭面板

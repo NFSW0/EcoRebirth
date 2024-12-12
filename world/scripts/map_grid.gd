@@ -24,3 +24,16 @@ func remove_grid_data(data_key: String):
 	if not data_key in grid_data:
 		return
 	grid_data.erase(data_key)
+
+func to_data() -> Dictionary:
+	var data = {}
+	data["grid_pos"] = grid_pos
+	data["grid_data"] = grid_data
+	return data
+
+static func new_from_data(data: Dictionary) -> MapGrid:
+	var saved_grid_pos = data.get("grid_pos",Vector2i())
+	var new_map_grid:MapGrid = MapGrid.new(saved_grid_pos if saved_grid_pos is Vector2i else DataTool.parse_vector2i(saved_grid_pos))
+	
+	new_map_grid.grid_data = data.get("grid_data",{})
+	return new_map_grid
