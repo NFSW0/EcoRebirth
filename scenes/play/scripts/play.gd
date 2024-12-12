@@ -39,21 +39,21 @@ func _ready():
 	timer.timeout.connect(_generate_enemy)
 
 func _unhandled_input(event):
-	if event.is_action_pressed("ui_cancel"): # ESC 打开灰幕与游戏菜单
-		if world2.under_construction:
+	if event.is_action_pressed("ui_cancel"): # ESC
+		if world2.under_construction: # 建造模式退出
 			world2.exit_build_mode()
 			return
 		UIManager.get_ui("GreyScreen", self) # ESC 打开灰幕与游戏菜单
-	if event.is_action_pressed("ui_accept"): # Space 特效功能测试
-		EffectManager.play_effect("ExampleEffect", Vector2i(100,50)) # Space 特效功能测试
+	if event.is_action_pressed("ui_accept"): # Space Enter
+		EffectManager.play_effect("ExampleEffect", Vector2i(100,50)) # 特效功能测试
 	if event.is_action_pressed("primary_interact"):
-		if world2.under_construction:
-			# TODO 确认建造
-			world2.place_tile(1,)
+		if world2.under_construction: # 建造模式放置
+			world2.place_tile()
 			return
 	if event.is_action_pressed("secondary_interact"):
-		var debug_adjunct = AdjunctActive.new("eco_rebirth:debug",player,null,false,1,0,0,5)
-		AdjunctManager.add_active_adjunct(debug_adjunct)
+		world2.enter_build_mode()
+		#var debug_adjunct = AdjunctActive.new("eco_rebirth:debug",player,null,false,1,0,0,5) # 附益功能测试
+		#AdjunctManager.add_active_adjunct(debug_adjunct)
 
 func _physics_process(delta):
 	_camera_follow(delta)

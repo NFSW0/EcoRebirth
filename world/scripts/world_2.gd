@@ -16,7 +16,12 @@ func _ready():
 
 func _process(_delta):
 	if under_construction:
-		_update_preview_layer()
+		var mouse_pos = get_global_mouse_position()
+		var map_pos = get_map_pos_from_global_pos(mouse_pos)
+		if map_pos == preview_map_pos:
+			return
+		preview_map_pos = map_pos
+		_update_preview_layer(map_pos)
 
 # 进入建造模式(瓦片数据)
 func enter_build_mode(source_id = -1, atlas_coords = Vector2i()):
@@ -27,16 +32,19 @@ func enter_build_mode(source_id = -1, atlas_coords = Vector2i()):
 # 退出建造模式
 func exit_build_mode():
 	under_construction = false
+	tile_map_layers[0].clear() # 清理预览残留
 
 # 放置瓦片 默认放置预览的瓦片
 func place_tile(layer_index: int = 1, map_pos: Vector2i = get_map_pos_from_global_pos(get_global_mouse_position()), source_id: int = preview_source_id, atlas_coords:Vector2i = preview_atlas_coords):
 	if layer_index < tile_map_layers.size():
 		tile_map_layers[layer_index].set_cell(map_pos, source_id, atlas_coords)
+		_update_preview_layer(map_pos)
 
 # 移除瓦片
 func remove_tile(layer_index: int = 1, map_pos: Vector2i = get_map_pos_from_global_pos(get_global_mouse_position())):
 	if layer_index < tile_map_layers.size():
 		tile_map_layers[layer_index].set_cell(map_pos, -1)
+		_update_preview_layer(map_pos)
 
 # 获取区块
 func get_chunk(chunk_pos: Vector2i) -> Chunk:
@@ -129,28 +137,21 @@ func _traverse_layer(call_back:Callable):
 	for index in tile_map_layers.size():
 		call_back.call(index)
 # 更新预览层
-func _update_preview_layer():
-	var mouse_pos = get_global_mouse_position()
-	var map_pos = get_map_pos_from_global_pos(mouse_pos)
+func _update_preview_layer(map_pos):
+	tile_map_layers[0].clear()
 	
-	if map_pos == preview_map_pos:
-		return
-	
-	preview_map_pos = map_pos
-	
-	if preview_source_id != -1:
-		modulate = Color(255, 99, 71, 0.5)
+	if not preview_source_id >= 0:
+		tile_map_layers[0].modulate = Color("#FF6347", 0.5)
 		
 		var target_source_id = tile_map_layers[1].get_cell_source_id(map_pos)
 		var target_atlas_coords = tile_map_layers[1].get_cell_atlas_coords(map_pos)
 		tile_map_layers[0].set_cell(map_pos, target_source_id, target_atlas_coords)
 	else:
-		if _can_place(map_pos):
-			modulate = Color(70, 130, 180, 0.5)
+		if _can_place([map_pos]):
+			tile_map_layers[0].modulate = Color("#4682B4", 1)
 		else:
-			modulate = Color(255, 99, 71, 0.5)
+			tile_map_layers[0].modulate = Color("#FF6347", 0.5)
 		
-		tile_map_layers[0].clear()
 		tile_map_layers[0].set_cell(map_pos, preview_source_id, preview_atlas_coords)
 # 是否可以放置(阻止重叠)
 func _can_place(positionList:Array[Vector2i]) -> bool:
