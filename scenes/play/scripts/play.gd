@@ -96,12 +96,11 @@ func _load_chunks_around_the_player(_delta):
 
 # 获取需要加载区块组 TODO 调整以适配屏幕 调整屏幕大小会看见远景 动态加载考虑加入相机视野参数
 func _get_chunks_by_chunk_center(chunk_pos, radius=1):
-	#var chunks = []
-	#for x in range(-radius, radius + 1):
-		#for y in range(-radius, radius + 1):
-			#chunks.append(chunk_pos + Vector2i(x, y))
-	#return chunks
-	return [chunk_pos,chunk_pos+Vector2i(1,0),chunk_pos+Vector2i(-1,0),chunk_pos+Vector2i(0,1),chunk_pos+Vector2i(0,-1)]
+	var chunks = []
+	for x in range(-radius, radius + 1):
+		for y in range(-radius, radius + 1):
+			chunks.append(chunk_pos + Vector2i(x, y))
+	return chunks
 
 # 生成敌人
 func _generate_enemy(_center_position: Vector2 = player.position, _no_enemy_range: float = no_enemy_range, _to_enemy_range: float = to_enemy_range):
