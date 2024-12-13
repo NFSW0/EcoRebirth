@@ -6,7 +6,7 @@ extends EcoEntity
 func _ready() -> void:
 	super._ready() # 多人初始化 更新数据
 	
-	# 获取数据并初始化子节点
+	# 获取数据并初始化子节点 
 	var character_data = get_entity_data()
 	var body_texture = TextureManager.get_texture(character_data["body"])
 	body.offset = Vector2(0, -body_texture.get_height() / 2)
