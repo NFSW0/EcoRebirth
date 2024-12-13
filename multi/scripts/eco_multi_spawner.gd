@@ -58,9 +58,10 @@ func _physics_process(_delta):
 		if multiplayer.has_multiplayer_peer():
 			spawn(data)
 		else:
+			var spawn_node = get_node_or_null(spawn_path)
 			var node = _generate_entity(data)
-			if node:
-				get_node(spawn_path).add_child(node)
+			if spawn_node and node:
+				spawn_node.add_child(node)
 	data_queue.clear()
 
 func _get_unique_name(data) -> String:
@@ -80,8 +81,8 @@ func _generate_entity(data) -> Node:
 	node_instance.name = _get_unique_name(data)
 	
 	# 设置节点初始化数据
-	if node_instance.has_method("set_entity_data"):
-		node_instance.set_entity_data(data)
+	node_instance.set("entity_data",data)
+	node_instance.set("visible", false)
 	
 	# 设置多人控制权限
 	(node_instance as Node).set_multiplayer_authority(data["sender_id"])
