@@ -43,13 +43,10 @@ func exit_build_mode():
 
 # 放置瓦片 默认放置预览的瓦片
 func place_tile(layer_index: int = 1, map_pos: Vector2i = get_map_pos_from_global_pos(get_global_mouse_position()), source_id: int = preview_source_id, atlas_coords:Vector2i = preview_atlas_coords):
-	if layer_index < tile_map_layers.size():
-		tile_map_layers[layer_index].set_cell(map_pos, source_id, atlas_coords)
-		_update_preview_layer(map_pos)
-		## 数据更新
-		var chunk_pos:Vector2i = get_chunk_pos_from_map_pos(map_pos)
-		var target_chunk:Chunk = await get_chunk(chunk_pos)
-		target_chunk.chunk_data["map_grids"][map_pos]["grid_data"]["wall_layer"] = {"source_id":source_id,"atlas_coords":atlas_coords}
+	if multiplayer.has_multiplayer_peer():
+		rpc("_place_tile", layer_index, map_pos, source_id, atlas_coords)
+	else:
+		_place_tile(layer_index,map_pos,source_id,atlas_coords)
 
 # 获取区块
 func get_chunk(chunk_pos: Vector2i) -> Chunk:
@@ -66,7 +63,9 @@ func get_the_loaded_chunks_array() -> Array:
 
 # 加载目标区块
 func load_chunk(chunk_pos: Vector2i):
+	# 等待多人数据传递完成
 	await _await_multi()
+	# 剔除已加载区块
 	if loaded_chunks.has(chunk_pos):
 		return
 	var chunk: Chunk = await _read_chunk(chunk_pos)
@@ -124,7 +123,7 @@ func get_map_pos_from_global_pos(global_pos: Vector2) -> Vector2i:
 func get_chunk_pos_from_map_pos(map_pos: Vector2) -> Vector2i:
 	return Vector2i(floor(map_pos.x / world_data["chunk_size"]), floor(map_pos.y / world_data["chunk_size"]))
 
-#region 多人初始化
+#region 多人
 func _multi_ready():
 	if multiplayer.has_multiplayer_peer():
 		if not multiplayer.is_server():
@@ -132,24 +131,41 @@ func _multi_ready():
 			return
 	_init_main_data(DataManager.get_data("using_archive_data"))
 
+# 多人请求数据
 @rpc("any_peer", "reliable")
 func _send_main_data():
 	var sender_id = multiplayer.get_remote_sender_id()
 	rpc_id(sender_id, "_init_main_data", world_data)
 
+# 多人初始化
 @rpc("any_peer", "reliable")
 func _init_main_data(_main_data):
 	world_data = _main_data
 	multi_sync = true
 	multi_sync_finished.emit()
+
+# 多人放置瓦片
+@rpc("any_peer","call_local","reliable")
+func _place_tile(layer_index: int, map_pos: Vector2i, source_id: int, atlas_coords:Vector2i):
+	if layer_index < tile_map_layers.size():
+		# 出现重合且不是移除
+		if source_id >= 0 and not _can_place([map_pos]):
+			return
+		tile_map_layers[layer_index].set_cell(map_pos, source_id, atlas_coords)
+		_update_preview_layer(map_pos)
+		# 数据更新
+		var chunk_pos:Vector2i = get_chunk_pos_from_map_pos(map_pos)
+		var target_chunk:Chunk = await get_chunk(chunk_pos)
+		target_chunk.chunk_data["map_grids"][map_pos]["grid_data"]["wall_layer"] = {"source_id":source_id,"atlas_coords":atlas_coords}
 #endregion
 
 #region 私有方法
 # 读取区块
 func _read_chunk(chunk_pos: Vector2i) -> Chunk:
+	# 等待多人数据传递完成
 	await _await_multi()
 	var chunk:Chunk = Chunk.new(chunk_pos)
-	var data_name = "%s_%s" % [world_data["name"], chunk.chunk_pos]
+	var data_name = "world_data_%s_%s" % [world_data["name"], chunk.chunk_pos]
 	var saved_chunk = DataManager.get_data(data_name)
 	if saved_chunk && saved_chunk["chunk_data"].get("map_grids"):
 		chunk = Chunk.new_from_data(saved_chunk)
@@ -162,7 +178,7 @@ func _save_chunk(chunk: Chunk) -> bool:
 		if not multiplayer.is_server():
 			return true
 	await _await_multi()
-	var data_name = "%s_%s" % [world_data["name"], chunk.chunk_pos]
+	var data_name = "world_data_%s_%s" % [world_data["name"], chunk.chunk_pos]
 	if DataManager.has_registered(data_name):
 		DataManager.set_data(data_name, chunk.to_data())
 	else:
@@ -208,4 +224,5 @@ func _can_place(positionList:Array[Vector2i]) -> bool:
 func _await_multi():
 	if not multi_sync:
 		await multi_sync_finished
+
 #endregion
