@@ -89,10 +89,10 @@ func _load_chunks_around_the_player(_delta):
 	var chunks_to_unload = old_chunk_array.filter(func(array_number):return not new_chunk_array.has(array_number))
 	# 加载新区块
 	for chunk_pos in chunks_to_load:
-		world2.load_chunk(chunk_pos)
+		await world2.load_chunk(chunk_pos)
 	# 卸载旧区块
 	for chunk_pos in chunks_to_unload:
-		world2.unload_chunk(chunk_pos)
+		await world2.unload_chunk(chunk_pos)
 
 # 获取需要加载区块组 TODO 调整以适配屏幕 调整屏幕大小会看见远景 动态加载考虑加入相机视野参数
 func _get_chunks_by_chunk_center(chunk_pos, radius=1):

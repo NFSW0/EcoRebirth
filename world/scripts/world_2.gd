@@ -1,22 +1,26 @@
 extends Node2D
 
-var world_data = { "chunk_size":16, "seed":123 } # 世界数据 从存档数据获取
+signal multi_sync_finished() # 多人同步完成信号，用于触发因多人数据没同步而暂停的方法
+var world_data = {"name":"name","chunk_size":16, "seed":123 } # 世界数据 从存档数据获取
 var chunk_generator : ChunkGenerator # 区块生成器
 var loaded_chunks := {} # 已加载区块 用字典存放区块相关数据
 var under_construction = false # 是否处于建造模式
 var preview_source_id = -1 # 预览瓦片源id
 var preview_atlas_coords = Vector2() # 预览瓦片编号
 var preview_map_pos = Vector2i() # 预览网格点
+var multi_sync = false # 多人同步完成标志
 @onready var tile_map_layers = [$preview_layer, $wall_layer, $ground_layer] # 瓦片地图
 
 # 初始化
 func _ready():
 	# 获取世界信息
-	world_data = DataManager.get_data("using_archive_data")
+	#world_data = DataManager.get_data("using_archive_data")
 	# 初始化区块生成器
 	chunk_generator = ChunkGenerator_NatureResource.new(ChunkGenerator_Environment.new(ChunkGenerator.new()))
+	# 多人初始化
+	_multi_ready()
 
-# 预览
+# 预览功能的更新
 func _process(_delta):
 	if under_construction:
 		var mouse_pos = get_global_mouse_position()
@@ -44,7 +48,7 @@ func place_tile(layer_index: int = 1, map_pos: Vector2i = get_map_pos_from_globa
 		_update_preview_layer(map_pos)
 		## 数据更新
 		var chunk_pos:Vector2i = get_chunk_pos_from_map_pos(map_pos)
-		var target_chunk:Chunk = get_chunk(chunk_pos)
+		var target_chunk:Chunk = await get_chunk(chunk_pos)
 		target_chunk.chunk_data["map_grids"][map_pos]["grid_data"]["wall_layer"] = {"source_id":source_id,"atlas_coords":atlas_coords}
 
 # 获取区块
@@ -53,7 +57,7 @@ func get_chunk(chunk_pos: Vector2i) -> Chunk:
 	if loaded_chunks.has(chunk_pos):
 		chunk = loaded_chunks[chunk_pos]
 	else:
-		chunk = _read_chunk(chunk_pos)
+		chunk = await _read_chunk(chunk_pos)
 	return chunk
 
 # 获取已加载区块组
@@ -62,9 +66,10 @@ func get_the_loaded_chunks_array() -> Array:
 
 # 加载目标区块
 func load_chunk(chunk_pos: Vector2i):
+	await _await_multi()
 	if loaded_chunks.has(chunk_pos):
 		return
-	var chunk: Chunk = _read_chunk(chunk_pos)
+	var chunk: Chunk = await _read_chunk(chunk_pos)
 	var chunk_data: Dictionary = chunk.get_chunk_data()
 	var map_grids:Dictionary = chunk_data.get("map_grids", {})
 	# 加载瓦片
@@ -99,7 +104,7 @@ func unload_chunk(chunk_pos: Vector2i):
 	
 	# 保存数据
 	var chunk:Chunk = loaded_chunks[chunk_pos]
-	var success = _save_chunk(chunk)
+	var success = await _save_chunk(chunk)
 	if not success:
 		var message = "区块 %s 保存失败" % chunk_pos # 生成日志信息
 		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), message) # 记录日志
@@ -114,9 +119,30 @@ func get_map_pos_from_global_pos(global_pos: Vector2) -> Vector2i:
 func get_chunk_pos_from_map_pos(map_pos: Vector2) -> Vector2i:
 	return Vector2i(floor(map_pos.x / world_data["chunk_size"]), floor(map_pos.y / world_data["chunk_size"]))
 
+#region 多人初始化
+func _multi_ready():
+	if multiplayer.has_multiplayer_peer():
+		if not multiplayer.is_server():
+			rpc_id(1, "_send_main_data")
+			return
+	_init_main_data(DataManager.get_data("using_archive_data"))
+
+@rpc("any_peer", "reliable")
+func _send_main_data():
+	var sender_id = multiplayer.get_remote_sender_id()
+	rpc_id(sender_id, "_init_main_data", world_data)
+
+@rpc("any_peer", "reliable")
+func _init_main_data(_main_data):
+	world_data = _main_data
+	multi_sync = true
+	multi_sync_finished.emit()
+#endregion
+
 #region 私有方法
 # 读取区块
 func _read_chunk(chunk_pos: Vector2i) -> Chunk:
+	await _await_multi()
 	var chunk:Chunk = Chunk.new(chunk_pos)
 	var data_name = "%s_%s" % [world_data["name"], chunk.chunk_pos]
 	var saved_chunk = DataManager.get_data(data_name)
@@ -127,6 +153,10 @@ func _read_chunk(chunk_pos: Vector2i) -> Chunk:
 	return chunk
 # 保存区块
 func _save_chunk(chunk: Chunk) -> bool:
+	if multiplayer.has_multiplayer_peer():
+		if not multiplayer.is_server():
+			return true
+	await _await_multi()
 	var data_name = "%s_%s" % [world_data["name"], chunk.chunk_pos]
 	if DataManager.has_registered(data_name):
 		DataManager.set_data(data_name, chunk.to_data())
@@ -169,4 +199,8 @@ func _can_place(positionList:Array[Vector2i]) -> bool:
 		if tile_map_layers[1].get_cell_source_id(map_pos) != -1:
 			return false
 	return true
+# 等待多人同步(添加到每个方法前用于暂停处理)
+func _await_multi():
+	if not multi_sync:
+		await multi_sync_finished
 #endregion
