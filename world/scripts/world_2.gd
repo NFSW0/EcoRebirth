@@ -88,6 +88,11 @@ func load_chunk(chunk_pos: Vector2i):
 		)
 	# TODO 加载生物 依赖实体生成系统
 	
+	# 保存数据
+	var success = await _save_chunk(chunk)
+	if not success:
+		var message = "区块 %s 保存失败" % chunk_pos # 生成日志信息
+		LogAccess.new().log_message(LogAccess.LogLevel.ERROR, type_string(typeof(self)), message) # 记录日志
 	# 附属更新
 	loaded_chunks[chunk_pos] = chunk
 
