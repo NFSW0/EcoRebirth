@@ -59,7 +59,8 @@ func _physics_process(_delta):
 			spawn(data)
 		else:
 			var node = _generate_entity(data)
-			get_node(spawn_path).add_child(node)
+			if node:
+				get_node(spawn_path).add_child(node)
 	data_queue.clear()
 
 func _get_unique_name(data) -> String:
