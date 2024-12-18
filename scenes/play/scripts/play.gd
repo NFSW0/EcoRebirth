@@ -27,6 +27,9 @@ var to_enemy_range = 400 # 可以生成敌人的半径(基于不可生成半径�
 func get_global_mouse_position() -> Vector2:
 	return world2.get_global_mouse_position()
 
+func enter_building_model(source_id = -1, atlas_coords = Vector2i()):
+	world2.enter_build_mode(source_id, atlas_coords)
+
 func _ready():
 	EcoMultiSpawner.reset_spawn_path(multi_entity.get_path()) # 重设置多人实体根节点
 	var role_menu = UIManager.get_ui("RoleMenu",self) # 打开角色选择界面
@@ -34,6 +37,7 @@ func _ready():
 	var using_player_data = DataManager.get_data("using_player_data",{"body":"Body1", "face":"Face1"}) # 获取选择的角色数据
 	using_player_data["resource_path"] = "res://character/scenes/character_model.tscn" # 补充预制体路径
 	EcoMultiSpawner.generate_entity(using_player_data) # 多人玩家实体
+	UIManager.get_ui("BuildingMenu",self)
 	add_child(timer)
 	timer.start(generate_interval)
 	timer.timeout.connect(_generate_enemy)

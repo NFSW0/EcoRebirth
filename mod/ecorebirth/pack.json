@@ -24,12 +24,16 @@
 {"name":"MessageBox", "path": "res://mod/ecorebirth/ui/message_box.tscn"},
 {"name":"GameMenu", "path": "res://mod/ecorebirth/ui/game_menu.tscn"},
 {"name":"GreyScreen", "path": "res://mod/ecorebirth/ui/grey_screen.tscn"},
+{"name":"BuildingMenu", "path": "res://mod/ecorebirth/ui/building_menu.tscn"},
 ],
 "texture": [
 {"name":"GithubLogo", "path":"res://mod/ecorebirth/texture/GitHub_logo.png", "tag":"none"},
 {"name":"TitleScreenBackGround", "path":"res://mod/ecorebirth/texture/TitleScreenBackGround.png", "tag":"none"},
 {"name":"Body1", "path":"res://mod/ecorebirth/texture/body1.png", "tag":"character_body"},
 {"name":"Face1", "path":"res://mod/ecorebirth/texture/face1.png", "tag":"character_face"},
+{"name":"StoneIcon", "path":"res://mod/ecorebirth/texture/stone_icon.png", "tag":"none"},
+{"name":"TreeIcon", "path":"res://mod/ecorebirth/texture/tree_icon.png", "tag":"none"},
+{"name":"GrassIcon", "path":"res://mod/ecorebirth/texture/grass_icon.png", "tag":"none"},
 ],
 "setting": [
 {"path":"Graphic/FullScreen", "options":[true, false], "callback_script": "res://mod/ecorebirth/scripts/ecorebirth.gd", "callback_method":"setting_full_screen"},

@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://djkdq36vdbr4k"]
+
+[ext_resource type="Texture2D" uid="uid://ccsn23aylaotc" path="res://mod/ecorebirth/texture/stone_icon.png" id="1_nvdik"]
+[ext_resource type="Script" path="res://mod/ecorebirth/scripts/building_menu.gd" id="1_whlve"]
+[ext_resource type="Texture2D" uid="uid://bs3dsivxp8cxs" path="res://mod/ecorebirth/texture/tree_icon.png" id="3_kpotk"]
+[ext_resource type="Texture2D" uid="uid://w5q6du1kheu1" path="res://mod/ecorebirth/texture/body1.png" id="4_it37f"]
+
+[node name="BuildingMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_whlve")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Content" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Null" type="TextureButton" parent="VBoxContainer/Content"]
+layout_mode = 2
+texture_normal = ExtResource("4_it37f")
+
+[node name="Stone" type="TextureButton" parent="VBoxContainer/Content"]
+layout_mode = 2
+texture_normal = ExtResource("1_nvdik")
+
+[node name="Tree" type="TextureButton" parent="VBoxContainer/Content"]
+layout_mode = 2
+texture_normal = ExtResource("3_kpotk")
+
+[node name="Kind" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer/Kind"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "装饰"
+
+[connection signal="pressed" from="VBoxContainer/Content/Null" to="." method="_on_null_pressed"]
+[connection signal="pressed" from="VBoxContainer/Content/Stone" to="." method="_on_stone_pressed"]
+[connection signal="pressed" from="VBoxContainer/Content/Tree" to="." method="_on_tree_pressed"]
+[connection signal="pressed" from="VBoxContainer/Kind/Button" to="." method="_on_button_pressed"]
